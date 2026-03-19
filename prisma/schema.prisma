@@ -1,0 +1,230 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  username      String    @unique
+  email         String?   @unique
+  emailVerified DateTime? @map("emailVerified")
+  image         String?
+  role          String    @default("viewer")
+  passwordHash  String?   @map("password_hash")
+  modifiable    Boolean                    @default(true)
+  accounts               Account[]
+  sessions               Session[]
+  deviceSessions         DeviceSession[]
+  notificationRecipients DailyNotificationRecipient[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("userId")
+  type              String
+  provider          String
+  providerAccountId String  @map("providerAccountId")
+  refreshToken      String? @map("refresh_token")
+  accessToken       String? @map("access_token")
+  expiresAt         Int?    @map("expires_at")
+  tokenType         String? @map("token_type")
+  scope             String?
+  idToken           String? @map("id_token")
+  sessionState      String? @map("session_state")
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("sessionToken")
+  userId       String   @map("userId")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("auth_sessions")
+}
+
+model DeviceSession {
+  token     String   @id
+  userId    String   @map("user_id")
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("device_sessions")
+}
+
+model VerificationToken {
+  identifier String
+  expires    DateTime
+  token      String
+
+  @@id([identifier, token])
+  @@map("verification_token")
+}
+
+model Role {
+  name        String           @id
+  description String?
+  modifiable  Boolean          @default(true)
+  rank        Int              @default(0)
+  permissions RolePermission[]
+
+  @@map("roles")
+}
+
+model RolePermission {
+  roleName   String @map("role_name")
+  permission String
+  role       Role   @relation(fields: [roleName], references: [name], onDelete: Cascade)
+
+  @@id([roleName, permission])
+  @@map("role_permissions")
+}
+
+enum DeliveryType {
+  post
+  digital
+}
+
+model ShopItem {
+  id              String       @id
+  title           String
+  imageUrl        String       @map("image_url")
+  costPence       Int          @map("cost_pence")
+  deliveryTime    String       @map("delivery_time")
+  deliveryType    DeliveryType @map("delivery_type")
+  displayOrder    Int          @default(0) @map("display_order")
+  quantityTracked Boolean      @default(false) @map("quantity_tracked")
+  quantity        Int?
+  createdAt       DateTime     @default(now()) @map("created_at")
+
+  @@index([displayOrder(sort: Asc), createdAt(sort: Desc)])
+  @@index([createdAt(sort: Desc)])
+  @@map("shop_items")
+}
+
+model SiteVisitor {
+  id          String        @id
+  firstSeenAt DateTime      @map("first_seen_at")
+  lastSeenAt  DateTime      @map("last_seen_at")
+  visitCount  Int           @map("visit_count")
+  sessions    SiteSession[]
+  imageViews  ImageView[]
+
+  @@map("site_visitors")
+}
+
+model SiteSession {
+  id                          String      @id
+  visitorId                   String      @map("visitor_id")
+  authenticatedUserIdentifier String?     @map("authenticated_user_identifier")
+  path                        String
+  startedAt       DateTime    @map("started_at")
+  endedAt         DateTime?   @map("ended_at")
+  durationSeconds Int?        @map("duration_seconds")
+  maxStillSeconds Int?        @map("max_still_seconds")
+  topStillPoint   String?     @map("top_still_point")
+  visitor         SiteVisitor @relation(fields: [visitorId], references: [id], onDelete: Cascade)
+
+  @@index([startedAt(sort: Desc)])
+  @@map("site_sessions")
+}
+
+model ContactMessage {
+  id                          String   @id
+  name                        String
+  email                       String
+  message                     String
+  reason                      String   @default("unspecified")
+  authenticatedUserIdentifier String?  @map("authenticated_user_identifier")
+  createdAt                   DateTime @map("created_at")
+  adminMessage                Boolean  @default(false)
+
+  @@index([createdAt(sort: Desc)])
+  @@map("contact_messages")
+}
+
+model ImageView {
+  id                          String      @id
+  imageId                     String      @map("image_id")
+  visitorId                   String      @map("visitor_id")
+  authenticatedUserIdentifier String?     @map("authenticated_user_identifier")
+  path                        String
+  viewedSeconds Int         @map("viewed_seconds")
+  createdAt     DateTime    @map("created_at")
+  visitor       SiteVisitor @relation(fields: [visitorId], references: [id], onDelete: Cascade)
+
+  @@index([createdAt(sort: Desc)])
+  @@map("image_views")
+}
+
+model ImageSpotlightSetting {
+  imageId String  @id @map("image_id")
+  enabled Boolean @default(false)
+
+  @@map("image_spotlight_settings")
+}
+
+model SiteTheme {
+  id                String @id
+  gradientStart     String @map("gradient_start")
+  gradientEnd       String @map("gradient_end")
+  gradientDirection Int    @default(155) @map("gradient_direction")
+  gradientIntensity Int    @default(60) @map("gradient_intensity")
+  accent            String
+  surface           String
+  surfaceStrong     String @map("surface_strong")
+  text              String
+  mutedText         String @map("muted_text")
+
+  @@map("site_theme")
+}
+
+model DailyNotificationConfig {
+  id         String                       @id
+  enabled    Boolean                      @default(false)
+  sendHour   Int                          @default(9) @map("send_hour")
+  sendMinute Int                          @default(0) @map("send_minute")
+  timezone   String                       @default("Europe/London")
+  fromEmail  String?                      @map("from_email")
+  updatedAt  DateTime                     @updatedAt @map("updated_at")
+  recipients DailyNotificationRecipient[]
+
+  @@map("daily_notification_config")
+}
+
+model DailyNotificationRecipient {
+  configId String                  @map("config_id")
+  userId   String                  @map("user_id")
+  config   DailyNotificationConfig @relation(fields: [configId], references: [id], onDelete: Cascade)
+  user     User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([configId, userId])
+  @@map("daily_notification_recipients")
+}
+
+model EmailServerSecret {
+  id                String   @id
+  host              String
+  port              Int      @default(587)
+  secure            Boolean  @default(false)
+  username          String?
+  encryptedPassword String?  @map("encrypted_password")
+  defaultFromEmail  String?  @map("default_from_email")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  @@map("email_server_secrets")
+}
+

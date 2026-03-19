@@ -1,0 +1,514 @@
+{
+  "visitors": {
+    "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180": {
+      "id": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "firstSeenAt": "2026-03-16T23:00:01.519Z",
+      "lastSeenAt": "2026-03-17T13:39:15.792Z",
+      "visitCount": 3
+    },
+    "visitor_1773702787477_wfmabpterj8": {
+      "id": "visitor_1773702787477_wfmabpterj8",
+      "firstSeenAt": "2026-03-16T23:13:05.507Z",
+      "lastSeenAt": "2026-03-16T23:19:58.345Z",
+      "visitCount": 1
+    }
+  },
+  "sessions": {
+    "7f702651-3eaa-4016-801b-2c7988ea3bd8": {
+      "id": "7f702651-3eaa-4016-801b-2c7988ea3bd8",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/contact",
+      "startedAt": "2026-03-16T23:00:01.519Z",
+      "endedAt": "2026-03-16T23:10:35.334Z",
+      "durationSeconds": 634
+    },
+    "6ea2d31f-38b1-472a-aa47-2ed146d22543": {
+      "id": "6ea2d31f-38b1-472a-aa47-2ed146d22543",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/contact",
+      "startedAt": "2026-03-16T23:10:36.065Z",
+      "endedAt": "2026-03-16T23:10:41.001Z",
+      "durationSeconds": 5
+    },
+    "c74b879f-1b3e-4bb4-891f-305c13854036": {
+      "id": "c74b879f-1b3e-4bb4-891f-305c13854036",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/",
+      "startedAt": "2026-03-16T23:10:42.091Z",
+      "endedAt": "2026-03-16T23:11:05.407Z",
+      "durationSeconds": 23
+    },
+    "2441d61a-a444-48f1-9190-3bd39969d79f": {
+      "id": "2441d61a-a444-48f1-9190-3bd39969d79f",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/",
+      "startedAt": "2026-03-16T23:12:49.931Z",
+      "endedAt": "2026-03-16T23:13:25.578Z",
+      "durationSeconds": 36
+    },
+    "064f1b97-e5cd-472b-9221-fbc7650230cf": {
+      "id": "064f1b97-e5cd-472b-9221-fbc7650230cf",
+      "visitorId": "visitor_1773702787477_wfmabpterj8",
+      "path": "/contact",
+      "startedAt": "2026-03-16T23:13:05.507Z",
+      "endedAt": "2026-03-16T23:13:29.775Z",
+      "durationSeconds": 24
+    },
+    "cd408c25-a8f7-47cb-807f-860c2d7b27c5": {
+      "id": "cd408c25-a8f7-47cb-807f-860c2d7b27c5",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/login",
+      "startedAt": "2026-03-16T23:15:38.268Z",
+      "endedAt": "2026-03-16T23:15:41.674Z",
+      "durationSeconds": 3
+    },
+    "6d1abd2f-dcd0-49fb-a99e-361fb43c65ce": {
+      "id": "6d1abd2f-dcd0-49fb-a99e-361fb43c65ce",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/admin",
+      "startedAt": "2026-03-16T23:15:45.604Z",
+      "endedAt": "2026-03-16T23:16:20.471Z",
+      "durationSeconds": 35
+    },
+    "ccca3d04-7f8b-46fc-8afb-d610c1cec943": {
+      "id": "ccca3d04-7f8b-46fc-8afb-d610c1cec943",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/admin",
+      "startedAt": "2026-03-16T23:17:44.806Z",
+      "endedAt": "2026-03-16T23:18:03.048Z",
+      "durationSeconds": 18,
+      "maxStillSeconds": 18,
+      "topStillPoint": "Scroll Y ~ 0px"
+    },
+    "7cf03578-651e-4339-827f-da59471cb48d": {
+      "id": "7cf03578-651e-4339-827f-da59471cb48d",
+      "visitorId": "visitor_1773702787477_wfmabpterj8",
+      "path": "/",
+      "startedAt": "2026-03-16T23:17:59.746Z",
+      "endedAt": "2026-03-16T23:19:58.327Z",
+      "durationSeconds": 119,
+      "maxStillSeconds": 118,
+      "topStillPoint": "Scroll Y ~ 0px"
+    },
+    "0b26e44e-45d3-45d3-a058-81632bd9bb46": {
+      "id": "0b26e44e-45d3-45d3-a058-81632bd9bb46",
+      "visitorId": "visitor_1773702787477_wfmabpterj8",
+      "path": "/",
+      "startedAt": "2026-03-16T23:17:59.760Z",
+      "endedAt": "2026-03-16T23:18:10.446Z",
+      "durationSeconds": 11,
+      "maxStillSeconds": 11,
+      "topStillPoint": "Scroll Y ~ 0px"
+    },
+    "80b11588-e0f3-4939-88cd-d9462357ee60": {
+      "id": "80b11588-e0f3-4939-88cd-d9462357ee60",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/admin",
+      "startedAt": "2026-03-16T23:18:03.580Z",
+      "endedAt": "2026-03-16T23:18:11.764Z",
+      "durationSeconds": 8,
+      "maxStillSeconds": 8,
+      "topStillPoint": "Scroll Y ~ 0px"
+    },
+    "e11dffd6-5c7a-42f1-a1e5-7984eaccc7d1": {
+      "id": "e11dffd6-5c7a-42f1-a1e5-7984eaccc7d1",
+      "visitorId": "visitor_1773702787477_wfmabpterj8",
+      "path": "/contact",
+      "startedAt": "2026-03-16T23:19:13.566Z",
+      "endedAt": "2026-03-16T23:19:58.340Z",
+      "durationSeconds": 45,
+      "maxStillSeconds": 39,
+      "topStillPoint": "Scroll Y ~ 200px"
+    },
+    "91e23588-85b6-4bad-987f-1b9358a8e149": {
+      "id": "91e23588-85b6-4bad-987f-1b9358a8e149",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/admin",
+      "startedAt": "2026-03-16T23:19:25.692Z"
+    },
+    "f0993174-76c0-421a-83d8-7e4ba6e80ae1": {
+      "id": "f0993174-76c0-421a-83d8-7e4ba6e80ae1",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/admin",
+      "startedAt": "2026-03-16T23:19:25.734Z",
+      "endedAt": "2026-03-16T23:19:50.065Z",
+      "durationSeconds": 24,
+      "maxStillSeconds": 24,
+      "topStillPoint": "Scroll Y ~ 200px"
+    },
+    "2bcff972-25ee-4d00-b08f-1bf2566cadc5": {
+      "id": "2bcff972-25ee-4d00-b08f-1bf2566cadc5",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/admin",
+      "startedAt": "2026-03-16T23:19:58.312Z",
+      "endedAt": "2026-03-16T23:21:01.584Z",
+      "durationSeconds": 63,
+      "maxStillSeconds": 58,
+      "topStillPoint": "Scroll Y ~ 0px"
+    },
+    "2ffe1bed-1506-4ae8-bfb9-136e7c58b54c": {
+      "id": "2ffe1bed-1506-4ae8-bfb9-136e7c58b54c",
+      "visitorId": "visitor_1773702787477_wfmabpterj8",
+      "path": "/",
+      "startedAt": "2026-03-16T23:19:58.331Z"
+    },
+    "29429f12-c2b0-4c69-b9f3-7123d3c3d456": {
+      "id": "29429f12-c2b0-4c69-b9f3-7123d3c3d456",
+      "visitorId": "visitor_1773702787477_wfmabpterj8",
+      "path": "/contact",
+      "startedAt": "2026-03-16T23:19:58.345Z",
+      "endedAt": "2026-03-16T23:24:21.557Z",
+      "durationSeconds": 263,
+      "maxStillSeconds": 263,
+      "topStillPoint": "Scroll Y ~ 200px"
+    },
+    "14d5bb96-dbd9-4d56-90b3-1cb02c8ff5cc": {
+      "id": "14d5bb96-dbd9-4d56-90b3-1cb02c8ff5cc",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/admin",
+      "startedAt": "2026-03-16T23:21:30.723Z"
+    },
+    "36453c08-4e59-4e8f-9a44-00768c42bedf": {
+      "id": "36453c08-4e59-4e8f-9a44-00768c42bedf",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/admin",
+      "startedAt": "2026-03-16T23:21:30.740Z",
+      "endedAt": "2026-03-16T23:22:01.792Z",
+      "durationSeconds": 31,
+      "maxStillSeconds": 29,
+      "topStillPoint": "Scroll Y ~ 400px"
+    },
+    "fc02fa01-3f86-4475-9817-623df7ad5610": {
+      "id": "fc02fa01-3f86-4475-9817-623df7ad5610",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/",
+      "startedAt": "2026-03-16T23:22:07.535Z"
+    },
+    "051bbf48-1c35-4e17-a33b-b5908a42d952": {
+      "id": "051bbf48-1c35-4e17-a33b-b5908a42d952",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/admin",
+      "startedAt": "2026-03-16T23:38:26.051Z",
+      "endedAt": "2026-03-16T23:38:39.318Z",
+      "durationSeconds": 13,
+      "maxStillSeconds": 4,
+      "topStillPoint": "Scroll Y ~ 0px"
+    },
+    "5b075df5-cbe0-4529-b848-4f1b93c46712": {
+      "id": "5b075df5-cbe0-4529-b848-4f1b93c46712",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/login",
+      "startedAt": "2026-03-16T23:38:39.812Z"
+    },
+    "2765c476-f86f-40a2-b0b5-50277066be73": {
+      "id": "2765c476-f86f-40a2-b0b5-50277066be73",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/",
+      "startedAt": "2026-03-16T23:38:42.609Z",
+      "endedAt": "2026-03-16T23:38:49.134Z",
+      "durationSeconds": 7,
+      "maxStillSeconds": 6,
+      "topStillPoint": "Scroll Y ~ 0px"
+    },
+    "5a70e088-283c-4e4b-9580-9350eb6b504d": {
+      "id": "5a70e088-283c-4e4b-9580-9350eb6b504d",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/",
+      "startedAt": "2026-03-17T09:31:18.699Z",
+      "endedAt": "2026-03-17T09:31:48.805Z",
+      "durationSeconds": 30,
+      "maxStillSeconds": 30,
+      "topStillPoint": "Scroll Y ~ 0px"
+    },
+    "6487d24e-13ae-4212-af55-552728e00676": {
+      "id": "6487d24e-13ae-4212-af55-552728e00676",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/contact",
+      "startedAt": "2026-03-17T09:31:48.601Z",
+      "endedAt": "2026-03-17T09:32:31.270Z",
+      "durationSeconds": 43,
+      "maxStillSeconds": 42,
+      "topStillPoint": "Scroll Y ~ 0px"
+    },
+    "7acabfe7-0336-4874-a8a9-c2410221b54f": {
+      "id": "7acabfe7-0336-4874-a8a9-c2410221b54f",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/login",
+      "startedAt": "2026-03-17T09:32:31.229Z",
+      "endedAt": "2026-03-17T09:32:48.940Z",
+      "durationSeconds": 18,
+      "maxStillSeconds": 18,
+      "topStillPoint": "Scroll Y ~ 0px"
+    },
+    "4abc3bcf-b6d6-48ad-ab4a-bbb451a2a8d3": {
+      "id": "4abc3bcf-b6d6-48ad-ab4a-bbb451a2a8d3",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/admin",
+      "startedAt": "2026-03-17T09:32:50.360Z",
+      "endedAt": "2026-03-17T09:35:06.894Z",
+      "durationSeconds": 137,
+      "maxStillSeconds": 66,
+      "topStillPoint": "Scroll Y ~ 0px"
+    },
+    "eefe24d7-2c0b-4946-9d10-e5f669821cdd": {
+      "id": "eefe24d7-2c0b-4946-9d10-e5f669821cdd",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/admin",
+      "startedAt": "2026-03-17T09:55:15.704Z",
+      "endedAt": "2026-03-17T09:55:21.540Z",
+      "durationSeconds": 6,
+      "maxStillSeconds": 5,
+      "topStillPoint": "Scroll Y ~ 0px"
+    },
+    "32651c8b-4e6e-48f5-80e7-88d6bb4b6c61": {
+      "id": "32651c8b-4e6e-48f5-80e7-88d6bb4b6c61",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/",
+      "startedAt": "2026-03-17T09:55:21.868Z",
+      "endedAt": "2026-03-17T09:55:28.265Z",
+      "durationSeconds": 6,
+      "maxStillSeconds": 6,
+      "topStillPoint": "Scroll Y ~ 0px"
+    },
+    "45730d78-8db2-4de5-8813-ee56909fcbf7": {
+      "id": "45730d78-8db2-4de5-8813-ee56909fcbf7",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/",
+      "startedAt": "2026-03-17T10:19:38.017Z",
+      "endedAt": "2026-03-17T10:28:11.125Z",
+      "durationSeconds": 513,
+      "maxStillSeconds": 513,
+      "topStillPoint": "Scroll Y ~ 0px"
+    },
+    "aa5353e3-0dc6-44d5-9c8b-7bee60e6af8c": {
+      "id": "aa5353e3-0dc6-44d5-9c8b-7bee60e6af8c",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/",
+      "startedAt": "2026-03-17T10:30:13.684Z",
+      "endedAt": "2026-03-17T10:31:04.996Z",
+      "durationSeconds": 51,
+      "maxStillSeconds": 51,
+      "topStillPoint": "Scroll Y ~ 0px"
+    },
+    "86c09514-87fa-4989-8062-3a06d71dca80": {
+      "id": "86c09514-87fa-4989-8062-3a06d71dca80",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/",
+      "startedAt": "2026-03-17T10:40:01.169Z",
+      "endedAt": "2026-03-17T10:40:12.801Z",
+      "durationSeconds": 12,
+      "maxStillSeconds": 12,
+      "topStillPoint": "Scroll Y ~ 0px"
+    },
+    "e56d4302-242b-4248-adcd-c627c5fb6187": {
+      "id": "e56d4302-242b-4248-adcd-c627c5fb6187",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/",
+      "startedAt": "2026-03-17T13:35:27.381Z"
+    },
+    "158bffea-5cf7-49a5-b7fe-b385a26e3a23": {
+      "id": "158bffea-5cf7-49a5-b7fe-b385a26e3a23",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/",
+      "startedAt": "2026-03-17T13:35:27.388Z",
+      "endedAt": "2026-03-17T13:35:56.690Z",
+      "durationSeconds": 29,
+      "maxStillSeconds": 29,
+      "topStillPoint": "Scroll Y ~ 0px"
+    },
+    "0d09b1c8-e987-4976-b2ff-2c0d30f96ea6": {
+      "id": "0d09b1c8-e987-4976-b2ff-2c0d30f96ea6",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/",
+      "startedAt": "2026-03-17T13:37:23.998Z",
+      "endedAt": "2026-03-17T13:38:52.780Z",
+      "durationSeconds": 89,
+      "maxStillSeconds": 89,
+      "topStillPoint": "Scroll Y ~ 0px"
+    },
+    "2927cb27-9409-4aa3-9a07-bb7ff72564b2": {
+      "id": "2927cb27-9409-4aa3-9a07-bb7ff72564b2",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/",
+      "startedAt": "2026-03-17T13:38:52.991Z",
+      "endedAt": "2026-03-17T13:38:58.383Z",
+      "durationSeconds": 5,
+      "maxStillSeconds": 5,
+      "topStillPoint": "Scroll Y ~ 0px"
+    },
+    "5f7b97cc-36e0-420b-8774-00d05f778d84": {
+      "id": "5f7b97cc-36e0-420b-8774-00d05f778d84",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/contact",
+      "startedAt": "2026-03-17T13:38:58.350Z",
+      "endedAt": "2026-03-17T13:39:15.276Z",
+      "durationSeconds": 17,
+      "maxStillSeconds": 17,
+      "topStillPoint": "Scroll Y ~ 0px"
+    },
+    "c63538d2-0a44-4439-9e49-f500ffb5bfbf": {
+      "id": "c63538d2-0a44-4439-9e49-f500ffb5bfbf",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/admin",
+      "startedAt": "2026-03-17T13:39:15.792Z",
+      "endedAt": "2026-03-17T13:40:35.458Z",
+      "durationSeconds": 80,
+      "maxStillSeconds": 77,
+      "topStillPoint": "Scroll Y ~ 1800px"
+    }
+  },
+  "contactMessages": [
+    {
+      "id": "538cd341-4364-41c3-b9d8-7e16bc08d426",
+      "name": "Testing",
+      "email": "testing@test.com",
+      "message": "This is a testing message",
+      "createdAt": "2026-03-17T13:39:10.211Z"
+    },
+    {
+      "id": "60d981b4-c31a-46e7-890f-6d8c94e33f74",
+      "name": "Test",
+      "email": "test@test.com",
+      "message": "Testme",
+      "createdAt": "2026-03-16T23:19:21.795Z"
+    }
+  ],
+  "imageViews": [
+    {
+      "id": "cee8e255-4140-4f3b-b549-5d4d7d6fa6c8",
+      "imageId": "footer-github-icon",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/admin",
+      "viewedSeconds": 80,
+      "createdAt": "2026-03-17T13:40:35.460Z"
+    },
+    {
+      "id": "a6f5819a-10ea-4909-a173-ade9002dbf35",
+      "imageId": "footer-github-icon",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/contact",
+      "viewedSeconds": 17,
+      "createdAt": "2026-03-17T13:39:15.280Z"
+    },
+    {
+      "id": "6dfab2d3-9690-41b9-b4be-05df26efa722",
+      "imageId": "footer-github-icon",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/",
+      "viewedSeconds": 5,
+      "createdAt": "2026-03-17T13:38:58.389Z"
+    },
+    {
+      "id": "c12493c1-5ccf-4c08-91d9-3e0dc7f470cb",
+      "imageId": "footer-github-icon",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/",
+      "viewedSeconds": 89,
+      "createdAt": "2026-03-17T13:38:52.808Z"
+    },
+    {
+      "id": "885659c5-8488-4b5f-8af5-5e9bab6a683f",
+      "imageId": "footer-github-icon",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/",
+      "viewedSeconds": 29,
+      "createdAt": "2026-03-17T13:35:56.694Z"
+    },
+    {
+      "id": "6a70ba04-f272-47e5-94ab-439e26a56e5e",
+      "imageId": "footer-github-icon",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/",
+      "viewedSeconds": 12,
+      "createdAt": "2026-03-17T10:40:12.803Z"
+    },
+    {
+      "id": "ae951ee7-3fe8-4139-bfc2-af2257baf03b",
+      "imageId": "footer-github-icon",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/",
+      "viewedSeconds": 51,
+      "createdAt": "2026-03-17T10:31:05.000Z"
+    },
+    {
+      "id": "395b99aa-0e46-41ee-94bb-e8d9fc971872",
+      "imageId": "footer-github-icon",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/",
+      "viewedSeconds": 513,
+      "createdAt": "2026-03-17T10:28:11.128Z"
+    },
+    {
+      "id": "7f34c205-f6c3-4a85-86fb-d9a9c7172fea",
+      "imageId": "footer-github-icon",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/",
+      "viewedSeconds": 6,
+      "createdAt": "2026-03-17T09:55:28.186Z"
+    },
+    {
+      "id": "31a4e206-24da-4425-9a12-069481babe77",
+      "imageId": "footer-github-icon",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/admin",
+      "viewedSeconds": 6,
+      "createdAt": "2026-03-17T09:55:21.559Z"
+    },
+    {
+      "id": "fa342d8c-f720-4e9f-9be5-c2910c19ef35",
+      "imageId": "footer-github-icon",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/admin",
+      "viewedSeconds": 136,
+      "createdAt": "2026-03-17T09:35:06.896Z"
+    },
+    {
+      "id": "e242721b-3329-47ad-ab8f-a81bc75fcc8b",
+      "imageId": "footer-github-icon",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/login",
+      "viewedSeconds": 18,
+      "createdAt": "2026-03-17T09:32:48.943Z"
+    },
+    {
+      "id": "fee921ba-c499-4cb2-ab98-d970ecdbf47b",
+      "imageId": "footer-github-icon",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/contact",
+      "viewedSeconds": 43,
+      "createdAt": "2026-03-17T09:32:31.345Z"
+    },
+    {
+      "id": "d9cae126-5685-44ea-bf56-986bd35d1fce",
+      "imageId": "footer-github-icon",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/",
+      "viewedSeconds": 30,
+      "createdAt": "2026-03-17T09:31:48.924Z"
+    },
+    {
+      "id": "3e0168fd-039d-4aae-a9bb-a5aac3425641",
+      "imageId": "footer-github-icon",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/login",
+      "viewedSeconds": 3,
+      "createdAt": "2026-03-16T23:38:42.467Z"
+    },
+    {
+      "id": "0c937986-cbd9-4466-993b-e728c9d761ad",
+      "imageId": "footer-github-icon",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/admin",
+      "viewedSeconds": 13,
+      "createdAt": "2026-03-16T23:38:39.581Z"
+    },
+    {
+      "id": "84241c1c-e790-4e29-9acb-0fec4d6a20dd",
+      "imageId": "footer-github-icon",
+      "visitorId": "1ce5d7a3-61f3-4b9f-afbf-bc8af2082180",
+      "path": "/admin",
+      "viewedSeconds": 31,
+      "createdAt": "2026-03-16T23:22:02.184Z"
+    }
+  ]
+}

@@ -1,0 +1,173 @@
+export type SiteThemeValues = {
+  gradientStart: string;
+  gradientEnd: string;
+  gradientDirection: number;
+  gradientIntensity: number;
+  accent: string;
+  surface: string;
+  surfaceStrong: string;
+  text: string;
+  mutedText: string;
+};
+
+export const DEFAULT_SITE_THEME: SiteThemeValues = {
+  gradientStart: "#0F172A",
+  gradientEnd: "#020617",
+  gradientDirection: 155,
+  gradientIntensity: 60,
+  accent: "#38BDF8",
+  surface: "#111827",
+  surfaceStrong: "#030712",
+  text: "#F8FAFC",
+  mutedText: "#CBD5E1",
+};
+
+function expandShortHex(value: string) {
+  return value
+    .split("")
+    .map((character) => `${character}${character}`)
+    .join("");
+}
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function toPercent(value: number) {
+  return `${Math.round(value)}%`;
+}
+
+function getGradientAnchors(direction: number) {
+  const radians = ((direction - 90) * Math.PI) / 180;
+  const primaryRadius = 34;
+  const secondaryRadius = 28;
+
+  const primaryX = 50 + Math.cos(radians) * primaryRadius;
+  const primaryY = 50 + Math.sin(radians) * primaryRadius;
+  const secondaryX = 50 - Math.cos(radians) * secondaryRadius;
+  const secondaryY = 50 - Math.sin(radians) * secondaryRadius;
+
+  return {
+    primaryX: toPercent(primaryX),
+    primaryY: toPercent(primaryY),
+    secondaryX: toPercent(secondaryX),
+    secondaryY: toPercent(secondaryY),
+  };
+}
+
+export function normalizeHexColor(value: string, fallback?: string) {
+  const candidate = value.trim();
+
+  if (!candidate) {
+    if (fallback) {
+      return fallback;
+    }
+
+    throw new Error("Color value is required.");
+  }
+
+  const withHash = candidate.startsWith("#") ? candidate : `#${candidate}`;
+  const hex = withHash.slice(1);
+
+  if (/^[0-9a-fA-F]{3}$/.test(hex)) {
+    return `#${expandShortHex(hex).toUpperCase()}`;
+  }
+
+  if (/^[0-9a-fA-F]{6}$/.test(hex)) {
+    return `#${hex.toUpperCase()}`;
+  }
+
+  throw new Error("Colors must be valid 3- or 6-digit hex values.");
+}
+
+export function normalizeGradientDirection(value: number | string, fallback = 155) {
+  const numericValue = typeof value === "number" ? value : Number(value);
+
+  if (!Number.isFinite(numericValue)) {
+    return fallback;
+  }
+
+  const normalized = ((Math.trunc(numericValue) % 360) + 360) % 360;
+  return normalized;
+}
+
+export function normalizeGradientIntensity(value: number | string, fallback = 60) {
+  const numericValue = typeof value === "number" ? value : Number(value);
+
+  if (!Number.isFinite(numericValue)) {
+    return fallback;
+  }
+
+  return clamp(Math.trunc(numericValue), 0, 100);
+}
+
+function hexToRgb(hex: string) {
+  const normalized = normalizeHexColor(hex).slice(1);
+  const value = Number.parseInt(normalized, 16);
+
+  return {
+    r: (value >> 16) & 255,
+    g: (value >> 8) & 255,
+    b: value & 255,
+  };
+}
+
+function rgba(hex: string, alpha: number) {
+  const { r, g, b } = hexToRgb(hex);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+export function buildThemeCssVariables(theme: SiteThemeValues) {
+  const normalizedTheme = {
+    gradientStart: normalizeHexColor(theme.gradientStart, DEFAULT_SITE_THEME.gradientStart),
+    gradientEnd: normalizeHexColor(theme.gradientEnd, DEFAULT_SITE_THEME.gradientEnd),
+    gradientDirection: normalizeGradientDirection(
+      theme.gradientDirection,
+      DEFAULT_SITE_THEME.gradientDirection,
+    ),
+    gradientIntensity: normalizeGradientIntensity(
+      theme.gradientIntensity,
+      DEFAULT_SITE_THEME.gradientIntensity,
+    ),
+    accent: normalizeHexColor(theme.accent, DEFAULT_SITE_THEME.accent),
+    surface: normalizeHexColor(theme.surface, DEFAULT_SITE_THEME.surface),
+    surfaceStrong: normalizeHexColor(
+      theme.surfaceStrong,
+      DEFAULT_SITE_THEME.surfaceStrong,
+    ),
+    text: normalizeHexColor(theme.text, DEFAULT_SITE_THEME.text),
+    mutedText: normalizeHexColor(theme.mutedText, DEFAULT_SITE_THEME.mutedText),
+  };
+
+  const intensityFactor = normalizedTheme.gradientIntensity / 100;
+  const accentSoftAlpha = 0.06 + intensityFactor * 0.18;
+  const accentStrongAlpha = 0.12 + intensityFactor * 0.24;
+  const ambientGlowAlpha = 0.02 + intensityFactor * 0.08;
+  const anchors = getGradientAnchors(normalizedTheme.gradientDirection);
+
+  return {
+    "--theme-gradient-start": normalizedTheme.gradientStart,
+    "--theme-gradient-end": normalizedTheme.gradientEnd,
+    "--theme-gradient-direction": `${normalizedTheme.gradientDirection}deg`,
+    "--theme-gradient-intensity": String(normalizedTheme.gradientIntensity),
+    "--theme-glow-anchor-x": anchors.primaryX,
+    "--theme-glow-anchor-y": anchors.primaryY,
+    "--theme-ambient-anchor-x": anchors.secondaryX,
+    "--theme-ambient-anchor-y": anchors.secondaryY,
+    "--theme-accent": normalizedTheme.accent,
+    "--theme-surface": normalizedTheme.surface,
+    "--theme-surface-strong": normalizedTheme.surfaceStrong,
+    "--theme-text": normalizedTheme.text,
+    "--theme-text-muted": normalizedTheme.mutedText,
+    "--theme-accent-soft": rgba(normalizedTheme.accent, accentSoftAlpha),
+    "--theme-accent-strong": rgba(normalizedTheme.accent, accentStrongAlpha),
+    "--theme-ambient-glow": rgba(normalizedTheme.text, ambientGlowAlpha),
+    "--theme-surface-soft": rgba(normalizedTheme.surface, 0.78),
+    "--theme-surface-strong-soft": rgba(normalizedTheme.surfaceStrong, 0.92),
+    "--theme-border": rgba(normalizedTheme.text, 0.12),
+    "--theme-border-strong": rgba(normalizedTheme.text, 0.2),
+    "--theme-text-soft": rgba(normalizedTheme.text, 0.82),
+    "--background": normalizedTheme.gradientEnd,
+    "--foreground": normalizedTheme.text,
+  } as Record<string, string>;
+}
