@@ -2,6 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { listShopItems } from "@/lib/site-data";
 
+export const dynamic = "force-dynamic";
+
 function formatPrice(costPence: number) {
   return new Intl.NumberFormat("en-GB", {
     style: "currency",
