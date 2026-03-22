@@ -53,7 +53,7 @@ body {
   background: var(--theme-body-background);
   background-attachment: fixed;
   color: var(--theme-text);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
   overflow-x: hidden;
 }
 
@@ -685,6 +685,7 @@ main {
     cursor: url("/cursor.svg") 3 3, pointer;
   }
 }
+
 
 
 
