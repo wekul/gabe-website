@@ -60,14 +60,17 @@ export default async function AdminAnalyticsPage() {
         </>
       }
     >
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-x-10 gap-y-12 md:grid-cols-2 xl:grid-cols-4">
         {cards.map((card) => (
-          <div key={card.label} className="theme-subpanel rounded-[1.5rem] p-5">
-            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--theme-accent)]">
+          <div
+            key={card.label}
+            className="border-t border-[color:var(--theme-accent)]/40 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.008))] px-0 pb-7 pt-6"
+          >
+            <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.3em] text-[color:var(--theme-accent)] md:text-xs">
               {card.accent}
             </p>
-            <p className="text-sm text-[color:var(--theme-text-muted)]">{card.label}</p>
-            <p className="mt-3 text-3xl font-semibold tracking-tight text-white">{card.value}</p>
+            <p className="text-sm uppercase tracking-[0.16em] text-[color:var(--theme-text-muted)]">{card.label}</p>
+            <p className="mt-5 text-[2.4rem] font-semibold tracking-[-0.06em] text-[color:var(--theme-text)]">{card.value}</p>
           </div>
         ))}
       </div>

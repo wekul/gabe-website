@@ -1,36 +1,194 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Gabe Website
 
-## Getting Started
+Next.js 16 application for the site, admin dashboard, theme management, visitor analytics, contact messages, authentication, and shop management.
 
-First, run the development server:
+## Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Next.js 16
+- React 19
+- Bun
+- Prisma
+- PostgreSQL
+- NextAuth
+- HeroUI
+
+## Requirements
+
+- Bun
+- Node-compatible environment for Next.js/Bun tooling
+- PostgreSQL if running locally without Docker
+- Docker Desktop if running the container stack
+
+## Environment
+
+### Local development
+
+Use `.env.local`.
+
+Required values:
+
+```env
+NEXTAUTH_SECRET=replace-with-a-long-random-secret
+NEXTAUTH_URL=http://localhost:3000
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=change-me
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/gabe_website
+SESSION_TIMEOUT_MINUTES=480
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Docker
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Copy `.env.docker.example` to `.env.docker` and set the values there.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Example:
 
-## Learn More
+```env
+NEXTAUTH_SECRET=replace-with-a-long-random-secret
+NEXTAUTH_URL=http://localhost:3000
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=change-me
+SESSION_TIMEOUT_MINUTES=480
+DATABASE_URL=postgresql://postgres:postgres@db:5432/gabe_website
+POSTGRES_DB=gabe_website
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Local development
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Install dependencies:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```powershell
+bun install
+```
 
-## Deploy on Vercel
+Generate Prisma client:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```powershell
+bunx prisma generate
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Push the schema to your local database:
+
+```powershell
+bunx prisma db push
+```
+
+Start the dev server:
+
+```powershell
+bun run dev
+```
+
+Open:
+
+- `http://localhost:3000`
+
+## Production build locally
+
+Build:
+
+```powershell
+bun run build
+```
+
+Start:
+
+```powershell
+bun run start
+```
+
+## Docker
+
+Files added for the container setup:
+
+- [Dockerfile](/D:/Programming/Website/gabe-website/Dockerfile)
+- [docker-compose.yml](/D:/Programming/Website/gabe-website/docker-compose.yml)
+- [docker/start.sh](/D:/Programming/Website/gabe-website/docker/start.sh)
+- [.env.docker.example](/D:/Programming/Website/gabe-website/.env.docker.example)
+- [.dockerignore](/D:/Programming/Website/gabe-website/.dockerignore)
+
+### Start the full stack
+
+1. Copy `.env.docker.example` to `.env.docker`
+2. Set the secrets and database values
+3. Run:
+
+```powershell
+docker compose up --build
+```
+
+This starts:
+
+- `db`: PostgreSQL 16
+- `app`: the Next.js production server on port `3000`
+
+URLs:
+
+- App: `http://localhost:3000`
+- Postgres: `localhost:5432`
+
+### What the app container does on startup
+
+`docker/start.sh`:
+
+1. waits for the database
+2. runs `bunx prisma db push`
+3. starts `bun run start`
+
+This means the schema is applied automatically when the app container boots.
+
+### Stop the stack
+
+```powershell
+docker compose down
+```
+
+### Stop and remove database data
+
+```powershell
+docker compose down -v
+```
+
+That removes the `postgres_data` volume and resets the database.
+
+## Database
+
+Prisma schema:
+
+- `prisma/schema.prisma`
+
+Prisma config:
+
+- `prisma.config.ts`
+
+Useful commands:
+
+```powershell
+bunx prisma generate
+bunx prisma db push
+```
+
+## Authentication
+
+Admin auth uses NextAuth.
+
+Bootstrap admin credentials are created from:
+
+- `ADMIN_USERNAME`
+- `ADMIN_PASSWORD`
+
+The bootstrap admin is assigned the locked `system_administrator` role.
+
+## Lint and typecheck
+
+```powershell
+bunx tsc --noEmit
+bun run lint
+```
+
+## Notes
+
+- Theme changes are stored in Postgres and applied globally through the root layout.
+- The Docker stack is intended for running the app and database together with one command.
+- If you change Prisma models, rerun `bunx prisma db push` locally or rebuild the Docker stack.

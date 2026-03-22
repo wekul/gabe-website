@@ -10,6 +10,7 @@ import {
   normalizeGradientDirection,
   normalizeGradientIntensity,
   normalizeHexColor,
+  normalizeThemeBackgroundStyle,
   type SiteThemeValues,
 } from "@/lib/theme";
 import { KNOWN_TRACKED_IMAGES } from "@/lib/tracked-images";
@@ -119,6 +120,7 @@ export type EmailServerSecretRecord = {
 export type ShopItemRecord = {
   id: string;
   title: string;
+  description: string;
   imageUrl: string;
   costPence: number;
   deliveryTime: string;
@@ -246,13 +248,18 @@ function normalizeRank(value: number | string | undefined) {
 }
 
 function normalizeSiteTheme(
-  input: Omit<Partial<SiteThemeValues>, "gradientDirection" | "gradientIntensity"> & {
+  input: Partial<Omit<SiteThemeValues, "backgroundStyle" | "gradientDirection" | "gradientIntensity">> & {
+    backgroundStyle?: string | null;
     gradientDirection?: number | null;
     gradientIntensity?: number | null;
   },
   existing: SiteThemeValues = DEFAULT_SITE_THEME,
 ): SiteThemeValues {
   return {
+    backgroundStyle: normalizeThemeBackgroundStyle(
+      input.backgroundStyle ?? existing.backgroundStyle,
+      existing.backgroundStyle,
+    ),
     gradientStart: normalizeHexColor(
       input.gradientStart ?? existing.gradientStart,
       existing.gradientStart,
@@ -488,6 +495,7 @@ function mapEmailServerSecret(secret: {
 function mapShopItem(item: {
   id: string;
   title: string;
+  description: string;
   imageUrl: string;
   costPence: number;
   deliveryTime: string;
@@ -500,6 +508,7 @@ function mapShopItem(item: {
   return {
     id: item.id,
     title: item.title,
+    description: item.description,
     imageUrl: item.imageUrl,
     costPence: item.costPence,
     deliveryTime: item.deliveryTime,
@@ -555,6 +564,7 @@ function mapRole(role: {
 }
 
 function mapSiteTheme(theme: {
+  backgroundStyle: string | null;
   gradientStart: string;
   gradientEnd: string;
   gradientDirection: number | null;
@@ -565,7 +575,18 @@ function mapSiteTheme(theme: {
   text: string;
   mutedText: string;
 }): SiteThemeRecord {
-  return normalizeSiteTheme(theme);
+  return normalizeSiteTheme({
+    backgroundStyle: theme.backgroundStyle ?? DEFAULT_SITE_THEME.backgroundStyle,
+    gradientStart: theme.gradientStart,
+    gradientEnd: theme.gradientEnd,
+    gradientDirection: theme.gradientDirection,
+    gradientIntensity: theme.gradientIntensity,
+    accent: theme.accent,
+    surface: theme.surface,
+    surfaceStrong: theme.surfaceStrong,
+    text: theme.text,
+    mutedText: theme.mutedText,
+  });
 }
 
 function mapImageSpotlight(
@@ -985,6 +1006,7 @@ export async function getShopItemById(itemId: string) {
 
 export async function createShopItem(actorUserId: string, input: {
   title: string;
+  description: string;
   imageUrl: string;
   costPence: number;
   deliveryTime: string;
@@ -1001,6 +1023,7 @@ export async function createShopItem(actorUserId: string, input: {
   await ensureShopItemOrder();
 
   const title = input.title.trim();
+  const description = input.description.trim();
   const imageUrl = input.imageUrl.trim();
   const deliveryTime = input.deliveryTime.trim();
   const costPence = Math.max(0, Math.trunc(Number(input.costPence)));
@@ -1031,6 +1054,7 @@ export async function createShopItem(actorUserId: string, input: {
     data: {
       id: randomUUID(),
       title,
+      description,
       imageUrl,
       costPence,
       deliveryTime,
@@ -1046,6 +1070,7 @@ export async function createShopItem(actorUserId: string, input: {
 
 export async function updateShopItem(actorUserId: string, itemId: string, input: {
   title: string;
+  description: string;
   imageUrl: string;
   costPence: number;
   deliveryTime: string;
@@ -1066,6 +1091,7 @@ export async function updateShopItem(actorUserId: string, itemId: string, input:
   }
 
   const title = input.title.trim();
+  const description = input.description.trim();
   const imageUrl = input.imageUrl.trim();
   const deliveryTime = input.deliveryTime.trim();
   const costPence = Math.max(0, Math.trunc(Number(input.costPence)));
@@ -1092,6 +1118,7 @@ export async function updateShopItem(actorUserId: string, itemId: string, input:
     where: { id: normalizedItemId },
     data: {
       title,
+      description,
       imageUrl,
       costPence,
       deliveryTime,
@@ -1715,3 +1742,11 @@ export async function getAdminStats(): Promise<AdminStats> {
     roles: roles.map(mapRole),
   };
 }
+
+
+
+
+
+
+
+

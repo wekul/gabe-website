@@ -2,8 +2,13 @@
 
 import { Button, Input, Switch } from "@heroui/react";
 import { useMemo, useState, type CSSProperties, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import type { ImageSpotlightRecord, SiteThemeRecord } from "@/lib/site-data";
-import { buildThemeCssVariables } from "@/lib/theme";
+import {
+  THEME_PRESETS,
+  buildThemeCssVariables,
+  type ThemeBackgroundStyle,
+} from "@/lib/theme";
 import { adminFetch } from "@/app/components/admin-session-client";
 
 type Props = {
@@ -12,10 +17,37 @@ type Props = {
 };
 
 type ColorThemeField = {
-  key: Exclude<keyof SiteThemeRecord, "gradientDirection" | "gradientIntensity">;
+  key: Exclude<keyof SiteThemeRecord, "backgroundStyle" | "gradientDirection" | "gradientIntensity">;
   label: string;
   description: string;
 };
+
+const backgroundStyleOptions: {
+  value: ThemeBackgroundStyle;
+  label: string;
+  description: string;
+}[] = [
+  {
+    value: "studio_gradient",
+    label: "Studio Gradient",
+    description: "Dark gradient with a gallery-style glow.",
+  },
+  {
+    value: "canvas",
+    label: "Canvas",
+    description: "Warm primed-canvas weave across the full background.",
+  },
+  {
+    value: "gallery_paper",
+    label: "Gallery Paper",
+    description: "Lighter exhibition-paper surface with subtle grain.",
+  },
+  {
+    value: "nocturne_grid",
+    label: "Nocturne Grid",
+    description: "Dark background with a restrained editorial grid.",
+  },
+];
 
 const colorThemeFields: ColorThemeField[] = [
   {
@@ -69,10 +101,20 @@ const numericFieldClassNames = {
   input: "!text-white caret-white",
 };
 
+function applyThemeToDocument(theme: SiteThemeRecord) {
+  const variables = buildThemeCssVariables(theme);
+
+  for (const [key, value] of Object.entries(variables)) {
+    document.body.style.setProperty(key, value);
+    document.documentElement.style.setProperty(key, value);
+  }
+}
+
 export default function AdminThemeManagement({
   initialTheme,
   initialImageSpotlights,
 }: Props) {
+  const router = useRouter();
   const [theme, setTheme] = useState(initialTheme);
   const [imageSpotlights, setImageSpotlights] = useState(initialImageSpotlights);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -107,6 +149,8 @@ export default function AdminThemeManagement({
       }
 
       setTheme(data.theme);
+      applyThemeToDocument(data.theme);
+      router.refresh();
       setStatusMessage("Theme saved.");
     } catch {
       setStatusMessage("Failed to save theme.");
@@ -148,15 +192,15 @@ export default function AdminThemeManagement({
   };
 
   return (
-    <section className="theme-subpanel rounded-[1.75rem] p-5 text-white md:p-6">
+    <section className="theme-subpanel rounded-[1.75rem] p-5 text-[color:var(--theme-text)] md:p-6">
       <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--theme-accent)]">
             Visual System
           </p>
-          <h3 className="text-2xl font-semibold tracking-tight text-white">Theme Controls</h3>
+          <h3 className="text-2xl font-semibold tracking-tight text-[color:var(--theme-text)]">Theme Controls</h3>
           <p className="mt-2 text-sm leading-6 text-[color:var(--theme-text-muted)]">
-            Persist a single site theme, control gradient behavior, and manage per-image spotlight states from one place.
+            Persist a single site theme, switch between full-background styles, and manage per-image spotlight states from one place.
           </p>
         </div>
         {statusMessage ? (
@@ -168,6 +212,79 @@ export default function AdminThemeManagement({
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
         <form className="space-y-6" onSubmit={handleSubmit}>
+          <div className="theme-card rounded-[1.25rem] p-4 md:p-5">
+            <div className="mb-4">
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[color:var(--theme-text-soft)]">
+                Presets
+              </p>
+              <p className="mt-2 text-sm text-[color:var(--theme-text-muted)]">
+                Apply a complete preset, then adjust individual colors or gradient behavior if needed.
+              </p>
+            </div>
+
+            <div className="grid gap-3 md:grid-cols-2">
+              {THEME_PRESETS.map((preset) => (
+                <button
+                  key={preset.id}
+                  type="button"
+                  className={`rounded-[1.15rem] border p-4 text-left transition ${
+                    theme.backgroundStyle === preset.values.backgroundStyle &&
+                    theme.gradientStart === preset.values.gradientStart &&
+                    theme.gradientEnd === preset.values.gradientEnd
+                      ? "border-[color:var(--theme-accent-strong)] bg-[color:var(--theme-accent-soft)]"
+                      : "border-[color:var(--theme-border)] bg-[rgba(255,255,255,0.03)]"
+                  }`}
+                  onClick={() => {
+                    setTheme({ ...preset.values });
+                    setStatusMessage(`${preset.label} applied. Save to persist it.`);
+                  }}
+                >
+                  <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[color:var(--theme-text)]">
+                    {preset.label}
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-[color:var(--theme-text-muted)]">
+                    {preset.description}
+                  </p>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="theme-card rounded-[1.25rem] p-4 md:p-5">
+            <div className="mb-4">
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[color:var(--theme-text-soft)]">
+                Background Style
+              </p>
+              <p className="mt-2 text-sm text-[color:var(--theme-text-muted)]">
+                Control the full-page surface treatment independently from the color palette.
+              </p>
+            </div>
+
+            <div className="grid gap-3 md:grid-cols-2">
+              {backgroundStyleOptions.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  className={`rounded-[1.15rem] border p-4 text-left transition ${
+                    theme.backgroundStyle === option.value
+                      ? "border-[color:var(--theme-accent-strong)] bg-[color:var(--theme-accent-soft)]"
+                      : "border-[color:var(--theme-border)] bg-[rgba(255,255,255,0.03)]"
+                  }`}
+                  onClick={() => {
+                    setTheme((current) => ({ ...current, backgroundStyle: option.value }));
+                  }}
+                >
+                  <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[color:var(--theme-text)]">
+                    {option.label}
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-[color:var(--theme-text-muted)]">
+                    {option.description}
+                  </p>
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div className="theme-card rounded-[1.25rem] p-4 md:p-5">
             <div className="mb-4">
               <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[color:var(--theme-text-soft)]">
@@ -290,6 +407,9 @@ export default function AdminThemeManagement({
 
             <div className="mt-4 flex flex-wrap gap-3 text-sm text-[color:var(--theme-text-soft)]">
               <span className="theme-status-pill rounded-full px-3 py-1">
+                {backgroundStyleOptions.find((option) => option.value === theme.backgroundStyle)?.label}
+              </span>
+              <span className="theme-status-pill rounded-full px-3 py-1">
                 Direction {theme.gradientDirection}deg
               </span>
               <span className="theme-status-pill rounded-full px-3 py-1">
@@ -332,7 +452,7 @@ export default function AdminThemeManagement({
                   >
                     <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                       <div>
-                        <p className="text-base font-semibold text-white">{spotlight.label}</p>
+                        <p className="text-base font-semibold text-[color:var(--theme-text)]">{spotlight.label}</p>
                         <p className="mt-1 text-sm text-[color:var(--theme-text-muted)]">
                           {spotlight.description}
                         </p>

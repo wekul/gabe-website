@@ -7,7 +7,7 @@ import { useState, type FormEvent } from "react";
 
 const fieldClassNames = {
   inputWrapper:
-    "bg-[color:var(--theme-surface-soft)] data-[hover=true]:bg-[color:var(--theme-surface-soft)] group-data-[focus=true]:bg-[color:var(--theme-surface-soft)] border border-[color:var(--theme-border)]",
+    "bg-[color:var(--theme-surface-soft)] data-[hover=true]:bg-[color:var(--theme-surface-soft)] group-data-[focus=true]:bg-[color:var(--theme-surface-soft)] border border-[color:var(--theme-border)] rounded-2xl",
   input: "!text-white caret-white",
   innerWrapper: "!text-white",
   label: "text-[color:var(--theme-text-soft)]",
@@ -57,26 +57,35 @@ export default function LoginForm() {
   };
 
   return (
-    <form className="page-panel space-y-4" onSubmit={handleSubmit}>
-      <h2 className="home-page-text !mb-6 text-white">Admin Login</h2>
-      <Input
-        label="Username or Email"
-        name="username"
-        type="text"
-        isRequired
-        classNames={fieldClassNames}
-      />
-      <Input
-        label="Password"
-        name="password"
-        type="password"
-        isRequired
-        classNames={fieldClassNames}
-      />
-      <Button type="submit" color="primary" className="w-full" isLoading={isLoading}>
-        Sign In
-      </Button>
-      {error ? <p className="text-sm text-red-300">{error}</p> : null}
-    </form>
+    <div className="public-layout">
+      <div className="max-w-3xl">
+        <p className="public-kicker">Private Access</p>
+        <h2 className="public-title">Admin Login</h2>
+        <p className="public-copy">
+          Sign in with your assigned username or email to access the admin workspace.
+        </p>
+      </div>
+
+      <form className="public-form-panel compact space-y-5" onSubmit={handleSubmit}>
+        <Input
+          label="Username or Email"
+          name="username"
+          type="text"
+          isRequired
+          classNames={fieldClassNames}
+        />
+        <Input
+          label="Password"
+          name="password"
+          type="password"
+          isRequired
+          classNames={fieldClassNames}
+        />
+        <Button type="submit" color="primary" className="w-full sm:w-auto" isLoading={isLoading}>
+          Sign In
+        </Button>
+        {error ? <p className="text-sm text-red-300">{error}</p> : null}
+      </form>
+    </div>
   );
 }

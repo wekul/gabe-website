@@ -36,6 +36,7 @@ export async function POST(request: Request) {
   try {
     const body = (await request.json()) as {
       title?: string;
+      description?: string;
       imageUrl?: string;
       costPence?: number;
       deliveryTime?: string;
@@ -46,6 +47,7 @@ export async function POST(request: Request) {
 
     const item = await createShopItem(session.user.id, {
       title: body.title ?? "",
+      description: body.description ?? "",
       imageUrl: body.imageUrl ?? "",
       costPence: typeof body.costPence === "number" ? body.costPence : 0,
       deliveryTime: body.deliveryTime ?? "",

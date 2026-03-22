@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSiteTheme, updateSiteTheme, userHasPermission } from "@/lib/site-data";
 import { requireValidApiSession } from "@/lib/device-session";
+import type { ThemeBackgroundStyle } from "@/lib/theme";
 
 async function requireManageTheme() {
   const session = await requireValidApiSession();
@@ -34,6 +35,7 @@ export async function POST(request: Request) {
 
   try {
     const body = (await request.json()) as {
+      backgroundStyle?: ThemeBackgroundStyle;
       gradientStart?: string;
       gradientEnd?: string;
       gradientDirection?: number;

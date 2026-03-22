@@ -11,13 +11,19 @@ export default async function AdminContactPage() {
   }
 
   return (
-    <section className="mx-auto w-full max-w-5xl px-4 py-8 text-[color:var(--theme-text)]">
-      <div className="mb-6 flex items-center justify-between gap-4">
-        <h2 className="text-3xl font-semibold">Contact Admin</h2>
-        <AdminSignOut />
-      </div>
+    <section className="public-shell">
+      <div className="public-layout">
+        <div className="flex flex-wrap items-start justify-between gap-5">
+          <div className="max-w-3xl">
+            <p className="public-kicker">Access Request</p>
+            <h2 className="public-title">Contact Admin</h2>
+            <p className="public-copy">
+              Send a signed-in request explaining which admin section you need and why access should be granted.
+            </p>
+          </div>
+          <AdminSignOut />
+        </div>
 
-      <div className="page-panel max-w-2xl">
         <AdminAccessRequestForm
           initialName={session.user.name ?? ""}
           initialEmail={session.user.email ?? ""}

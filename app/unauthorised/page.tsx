@@ -17,28 +17,21 @@ export default async function UnauthorisedPage({ searchParams }: Props) {
   const from = params?.from ? formatSectionName(params.from) : null;
 
   return (
-    <section className="page-shell max-w-3xl">
-      <div className="page-panel max-w-3xl text-left">
-        <p className="mb-3 text-sm uppercase tracking-[0.2em] text-red-300">Unauthorised</p>
-        <h1 className="mb-4 text-4xl font-semibold text-white">You do not have access to this admin page.</h1>
-        <p className="mb-6 text-[color:var(--theme-text-muted)]">
-          {from
-            ? `Your current role is not allowed to open the ${from} section.`
-            : "Your current role does not include permission for this admin section."}
-        </p>
-        <div className="flex flex-wrap gap-3">
-          <Link href="/admin" className="theme-action-link text-sm font-medium">
-            Back To Admin
-          </Link>
-          <Link
-            href="/admin/contact-admin"
-            className="inline-flex items-center rounded-full bg-red-300 px-4 py-2 text-sm font-medium text-zinc-950 transition hover:bg-red-200"
-          >
-            Contact Admin
-          </Link>
-          <Link href="/" className="theme-action-link text-sm font-medium">
-            Back To Site
-          </Link>
+    <section className="public-shell">
+      <div className="public-layout">
+        <div className="max-w-3xl">
+          <p className="public-kicker">Restricted</p>
+          <h1 className="public-title">Access denied.</h1>
+          <p className="public-copy">
+            {from
+              ? `Your current role is not allowed to open the ${from} section.`
+              : "Your current role does not include permission for this admin section."}
+          </p>
+          <div className="public-actions">
+            <Link href="/admin" className="public-link">Back To Admin</Link>
+            <Link href="/admin/contact-admin" className="public-link">Contact Admin</Link>
+            <Link href="/" className="public-link secondary">Back To Site</Link>
+          </div>
         </div>
       </div>
     </section>

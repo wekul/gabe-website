@@ -10,7 +10,7 @@ type Props = {
 
 const inputClassNames = {
   inputWrapper:
-    "bg-[color:var(--theme-surface-soft)] data-[hover=true]:bg-[color:var(--theme-surface-soft)] group-data-[focus=true]:bg-[color:var(--theme-surface-soft)] border border-[color:var(--theme-border)]",
+    "bg-[color:var(--theme-surface-soft)] data-[hover=true]:bg-[color:var(--theme-surface-soft)] group-data-[focus=true]:bg-[color:var(--theme-surface-soft)] border border-[color:var(--theme-border)] rounded-2xl",
   input: "!text-white caret-white",
   innerWrapper: "!text-white",
   label: "text-[color:var(--theme-text-soft)]",
@@ -18,7 +18,7 @@ const inputClassNames = {
 
 const textareaClassNames = {
   inputWrapper:
-    "bg-[color:var(--theme-surface-soft)] data-[hover=true]:bg-[color:var(--theme-surface-soft)] group-data-[focus=true]:bg-[color:var(--theme-surface-soft)] border border-[color:var(--theme-border)]",
+    "bg-[color:var(--theme-surface-soft)] data-[hover=true]:bg-[color:var(--theme-surface-soft)] group-data-[focus=true]:bg-[color:var(--theme-surface-soft)] border border-[color:var(--theme-border)] rounded-2xl",
   input: "!text-white caret-white",
   label: "text-[color:var(--theme-text-soft)]",
 };
@@ -68,12 +68,7 @@ export default function AdminAccessRequestForm({ initialName, initialEmail }: Pr
   };
 
   return (
-    <form className="w-full max-w-md space-y-4" onSubmit={handleSubmit}>
-      <h2 className="home-page-text !mb-6 text-white">Request Admin Access</h2>
-      <p className="text-sm text-[color:var(--theme-text-muted)]">
-        Explain which admin section you need and why. This request can only be sent by a signed-in user.
-      </p>
-
+    <form className="public-form-panel compact space-y-5" onSubmit={handleSubmit}>
       <Input
         label="Name"
         name="name"
@@ -93,13 +88,13 @@ export default function AdminAccessRequestForm({ initialName, initialEmail }: Pr
       <Textarea
         label="Request"
         name="message"
-        minRows={5}
+        minRows={6}
         isRequired
         placeholder="I need access to the Users page to manage staff accounts..."
         classNames={textareaClassNames}
       />
 
-      <Button type="submit" color="primary" className="w-full" isLoading={isSubmitting}>
+      <Button type="submit" color="primary" className="w-full sm:w-auto" isLoading={isSubmitting}>
         Contact Admin
       </Button>
       {submitMessage ? <p className="text-sm text-[color:var(--theme-text-soft)]">{submitMessage}</p> : null}

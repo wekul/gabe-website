@@ -101,6 +101,7 @@ enum DeliveryType {
 model ShopItem {
   id              String       @id
   title           String
+  description     String       @default("")
   imageUrl        String       @map("image_url")
   costPence       Int          @map("cost_pence")
   deliveryTime    String       @map("delivery_time")
@@ -179,6 +180,7 @@ model ImageSpotlightSetting {
 
 model SiteTheme {
   id                String @id
+  backgroundStyle   String @default("studio_gradient") @map("background_style")
   gradientStart     String @map("gradient_start")
   gradientEnd       String @map("gradient_end")
   gradientDirection Int    @default(155) @map("gradient_direction")
@@ -227,4 +229,8 @@ model EmailServerSecret {
 
   @@map("email_server_secrets")
 }
+
+
+
+
 

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Button, Input, Select, SelectItem, Switch } from "@heroui/react";
+import { Button, Input, Select, SelectItem, Switch, Textarea } from "@heroui/react";
 import { useMemo, useState, type FormEvent } from "react";
 import type { ShopItemRecord } from "@/lib/site-data";
 import { adminFetch } from "@/app/components/admin-session-client";
@@ -12,6 +12,7 @@ type Props = {
 
 type ShopItemDraft = {
   title: string;
+  description: string;
   imageUrl: string;
   cost: string;
   deliveryTime: string;
@@ -55,6 +56,7 @@ function sortItems(items: ShopItemRecord[]) {
 function createDraft(item: ShopItemRecord): ShopItemDraft {
   return {
     title: item.title,
+    description: item.description,
     imageUrl: item.imageUrl,
     cost: (item.costPence / 100).toFixed(2),
     deliveryTime: item.deliveryTime,
@@ -90,6 +92,7 @@ export default function AdminShopManagement({ initialItems }: Props) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title: String(formData.get("title") ?? ""),
+          description: String(formData.get("description") ?? ""),
           imageUrl: String(formData.get("imageUrl") ?? ""),
           costPence: Math.round(Number(formData.get("cost") ?? 0) * 100),
           deliveryTime: String(formData.get("deliveryTime") ?? ""),
@@ -143,6 +146,7 @@ export default function AdminShopManagement({ initialItems }: Props) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title: draft.title,
+          description: draft.description,
           imageUrl: draft.imageUrl,
           costPence: Math.round(Number(draft.cost || 0) * 100),
           deliveryTime: draft.deliveryTime,
@@ -253,7 +257,7 @@ export default function AdminShopManagement({ initialItems }: Props) {
           </p>
           <h3 className="text-2xl font-semibold tracking-tight text-white">Shop Management</h3>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-[color:var(--theme-text-muted)]">
-            Add items for the storefront, reorder how they appear, and maintain delivery or stock settings.
+            Add items for the storefront, reorder how they appear, and maintain delivery, description, or stock settings.
           </p>
         </div>
         {statusMessage ? (
@@ -315,6 +319,16 @@ export default function AdminShopManagement({ initialItems }: Props) {
               classNames={fieldClassNames}
             />
           ) : null}
+        </div>
+
+        <div className="mt-4">
+          <Textarea
+            label="Description"
+            name="description"
+            minRows={6}
+            classNames={fieldClassNames}
+            placeholder="Describe the work, medium, edition details, or shipping notes."
+          />
         </div>
 
         <div className="mt-5 flex items-center gap-3">
@@ -451,6 +465,15 @@ export default function AdminShopManagement({ initialItems }: Props) {
                         onValueChange={(value) => updateDraft(item.id, { quantity: value })}
                       />
                     ) : null}
+                    <div className="md:col-span-2">
+                      <Textarea
+                        label="Description"
+                        minRows={6}
+                        value={draft.description}
+                        classNames={fieldClassNames}
+                        onValueChange={(value) => updateDraft(item.id, { description: value })}
+                      />
+                    </div>
                   </div>
                 </div>
 

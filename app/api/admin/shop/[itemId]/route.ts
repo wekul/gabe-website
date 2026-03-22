@@ -29,6 +29,7 @@ export async function PATCH(
   try {
     const body = (await request.json()) as {
       title?: string;
+      description?: string;
       imageUrl?: string;
       costPence?: number;
       deliveryTime?: string;
@@ -48,6 +49,7 @@ export async function PATCH(
 
     const item = await updateShopItem(session.user.id, itemId, {
       title: body.title ?? "",
+      description: body.description ?? "",
       imageUrl: body.imageUrl ?? "",
       costPence: typeof body.costPence === "number" ? body.costPence : 0,
       deliveryTime: body.deliveryTime ?? "",
