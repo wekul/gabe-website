@@ -20,6 +20,11 @@ function getSessionTimeoutMinutes() {
   return value;
 }
 
+function shouldUseSecureCookies() {
+  const configuredUrl = process.env.NEXTAUTH_URL ?? "";
+  return configuredUrl.startsWith("https://");
+}
+
 function getExpiryDate() {
   return new Date(Date.now() + getSessionTimeoutMinutes() * 60_000);
 }
@@ -58,7 +63,7 @@ export async function setDeviceSessionCookie(token: string, expiresAt: Date) {
   cookieStore.set(DEVICE_SESSION_COOKIE_NAME, token, {
     httpOnly: true,
     sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    secure: shouldUseSecureCookies(),
     path: "/",
     expires: expiresAt,
   });
@@ -69,7 +74,7 @@ export async function clearDeviceSessionCookie() {
   cookieStore.set(DEVICE_SESSION_COOKIE_NAME, "", {
     httpOnly: true,
     sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    secure: shouldUseSecureCookies(),
     path: "/",
     expires: new Date(0),
   });
