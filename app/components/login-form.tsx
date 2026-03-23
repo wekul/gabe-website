@@ -1,17 +1,57 @@
 "use client";
 
 import { Button, Input } from "@heroui/react";
-import { signIn, signOut } from "next-auth/react";
+import { getSession, signIn, signOut } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
 
 const fieldClassNames = {
   inputWrapper:
     "bg-[color:var(--theme-surface-soft)] data-[hover=true]:bg-[color:var(--theme-surface-soft)] group-data-[focus=true]:bg-[color:var(--theme-surface-soft)] border border-[color:var(--theme-border)] rounded-2xl",
-  input: "!text-white caret-white",
-  innerWrapper: "!text-white",
+  input: "![color:var(--theme-text)] caret-[color:var(--theme-text)]",
+  innerWrapper: "![color:var(--theme-text)]",
   label: "text-[color:var(--theme-text-soft)]",
 };
+
+function delay(ms: number) {
+  return new Promise((resolve) => {
+    window.setTimeout(resolve, ms);
+  });
+}
+
+async function waitForAuthenticatedSession(maxAttempts = 8) {
+  for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+    const session = await getSession();
+    if (session?.user?.id) {
+      return true;
+    }
+
+    await delay(250 * (attempt + 1));
+  }
+
+  return false;
+}
+
+async function startDeviceSession(maxAttempts = 4) {
+  for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+    const response = await fetch("/api/auth/device-session", {
+      method: "POST",
+      credentials: "same-origin",
+    });
+
+    if (response.ok) {
+      return true;
+    }
+
+    if (response.status !== 401) {
+      return false;
+    }
+
+    await delay(250 * (attempt + 1));
+  }
+
+  return false;
+}
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
@@ -41,13 +81,19 @@ export default function LoginForm() {
       return;
     }
 
-    const deviceSessionResponse = await fetch("/api/auth/device-session", {
-      method: "POST",
-    });
+    const sessionReady = await waitForAuthenticatedSession();
+    if (!sessionReady) {
+      setIsLoading(false);
+      await signOut({ redirect: false });
+      setError("Login succeeded, but the authenticated session was not ready in time.");
+      return;
+    }
+
+    const deviceSessionStarted = await startDeviceSession();
 
     setIsLoading(false);
 
-    if (!deviceSessionResponse.ok) {
+    if (!deviceSessionStarted) {
       await signOut({ redirect: false });
       setError("Login succeeded, but the device session could not be started.");
       return;

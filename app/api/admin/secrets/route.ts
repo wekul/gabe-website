@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logServerError } from "@/lib/error-logging";
 import { requireValidApiSession } from "@/lib/device-session";
 import { getEmailServerSecret, updateEmailServerSecret, userHasPermission } from "@/lib/site-data";
 
@@ -53,9 +54,12 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ secret });
   } catch (error) {
+    await logServerError(error, { source: "/api/admin/secrets" });
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Failed to save secrets." },
       { status: 400 },
     );
   }
 }
+
+

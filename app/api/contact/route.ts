@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logServerError } from "@/lib/error-logging";
 import { addContactMessage } from "@/lib/site-data";
 import { getCurrentAuthenticatedLogIdentifier } from "@/lib/logged-in-user";
 
@@ -24,8 +25,11 @@ export async function POST(request: Request) {
     );
     return NextResponse.json({ ok: true });
   } catch (error) {
+    await logServerError(error, { source: "/api/contact" });
     const message =
       error instanceof Error ? error.message : "Failed to submit message.";
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }
+
+

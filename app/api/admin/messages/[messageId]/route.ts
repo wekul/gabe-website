@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logServerError } from "@/lib/error-logging";
 import { deleteContactMessage, userHasPermission } from "@/lib/site-data";
 import { requireValidApiSession } from "@/lib/device-session";
 
@@ -30,7 +31,10 @@ export async function DELETE(
     await deleteContactMessage(messageId);
     return NextResponse.json({ ok: true });
   } catch (error) {
+    await logServerError(error, { source: "/api/admin/messages/[messageId]" });
     const message = error instanceof Error ? error.message : "Failed to delete message.";
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }
+
+

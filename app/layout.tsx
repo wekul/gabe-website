@@ -1,8 +1,6 @@
 import type { CSSProperties } from "react";
 import type { Metadata } from "next";
-import Image from "next/image";
 import "./globals.css";
-import github from "@/app/github-142-svgrepo-com.svg";
 import MobileNav from "@/app/components/mobile-nav";
 import Providers from "@/app/providers";
 import VisitorTracker from "@/app/components/visitor-tracker";
@@ -57,17 +55,17 @@ export default async function RootLayout({
           </header>
           <main>{children}</main>
           <CookieConsentBanner />
-          <div className="fixed bottom-4 right-4 flex items-center gap-2" id="footer">
-            <span className="font-semibold">Site by wekul</span>
-            <a href="https://github.com/wefird" target="_blank" rel="noopener noreferrer">
-              <Image
-                src={github}
-                alt="GitHub"
-                width={24}
-                height={24}
-                id="github-icon"
-                data-track-image="footer-github-icon"
-              />
+          <div className="fixed bottom-4 right-4" id="footer">
+            <a
+              href="https://github.com/wekul/gabe-website"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Developed by wekul on GitHub"
+              className="footer-link"
+              data-track-image="footer-github-icon"
+            >
+              <span className="footer-icon" aria-hidden="true" />
+              <span className="footer-label">Developed by wekul</span>
             </a>
           </div>
         </Providers>

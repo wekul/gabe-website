@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logServerError } from "@/lib/error-logging";
 import { listImageSpotlights, setImageSpotlight, userHasPermission } from "@/lib/site-data";
 import { requireValidApiSession } from "@/lib/device-session";
 
@@ -41,7 +42,10 @@ export async function POST(request: Request) {
     const spotlight = await setImageSpotlight(body.imageId ?? "", Boolean(body.enabled));
     return NextResponse.json({ spotlight });
   } catch (error) {
+    await logServerError(error, { source: "/api/admin/theme/spotlights" });
     const message = error instanceof Error ? error.message : "Failed to update spotlight.";
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }
+
+

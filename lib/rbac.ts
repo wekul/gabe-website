@@ -6,6 +6,7 @@ export const ALL_PERMISSIONS = [
   "view_contact_messages",
   "view_admin_messages",
   "view_image_views",
+  "view_error_logs",
   "manage_theme",
   "manage_users",
   "manage_roles",

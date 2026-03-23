@@ -74,32 +74,37 @@ export default function CookieConsentBanner() {
   }
 
   return (
-    <div className="cookie-banner theme-card">
-      <div className="cookie-banner-copy">
-        <p className="cookie-banner-title">Cookie Notice</p>
-        <p className="cookie-banner-text">
-          This site uses cookies for analytics and visitor tracking. You can accept or decline non-essential tracking.
-        </p>
-      </div>
-      <div className="cookie-banner-actions">
-        <Button
-          variant="flat"
-          className="cookie-banner-button cookie-banner-button-secondary"
-          onPress={() => {
-            writeConsent("declined");
-          }}
-        >
-          Decline
-        </Button>
-        <Button
-          color="primary"
-          className="cookie-banner-button"
-          onPress={() => {
-            writeConsent("accepted");
-          }}
-        >
-          Accept
-        </Button>
+    <div className="cookie-consent-modal" role="dialog" aria-modal="true" aria-labelledby="cookie-consent-title">
+      <div className="cookie-consent-backdrop" />
+      <div className="cookie-consent-panel theme-card">
+        <div className="cookie-banner-copy">
+          <p id="cookie-consent-title" className="cookie-banner-title">
+            Cookie Notice
+          </p>
+          <p className="cookie-banner-text">
+            This site uses cookies for analytics and visitor tracking. You can accept or decline non-essential tracking.
+          </p>
+        </div>
+        <div className="cookie-banner-actions">
+          <Button
+            variant="flat"
+            className="cookie-banner-button cookie-banner-button-secondary"
+            onPress={() => {
+              writeConsent("declined");
+            }}
+          >
+            Decline
+          </Button>
+          <Button
+            color="primary"
+            className="cookie-banner-button"
+            onPress={() => {
+              writeConsent("accepted");
+            }}
+          >
+            Accept
+          </Button>
+        </div>
       </div>
     </div>
   );

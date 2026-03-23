@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logServerError } from "@/lib/error-logging";
 import type { DeliveryType } from "@prisma/client";
 import { requireValidApiSession } from "@/lib/device-session";
 import { createShopItem, listShopItems, userHasPermission } from "@/lib/site-data";
@@ -58,9 +59,12 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ item });
   } catch (error) {
+    await logServerError(error, { source: "/api/admin/shop" });
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Failed to create item." },
       { status: 400 },
     );
   }
 }
+
+

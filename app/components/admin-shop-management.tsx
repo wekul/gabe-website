@@ -24,16 +24,16 @@ type ShopItemDraft = {
 const fieldClassNames = {
   inputWrapper:
     "rounded-2xl border border-[color:var(--theme-border)] bg-[color:var(--theme-surface-soft)] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] data-[hover=true]:bg-[color:var(--theme-surface-soft)] group-data-[focus=true]:border-[color:var(--theme-accent-strong)] group-data-[focus=true]:bg-[color:var(--theme-surface-soft)]",
-  input: "!text-white caret-white",
-  innerWrapper: "!text-white",
+  input: "![color:var(--theme-text)] caret-[color:var(--theme-text)]",
+  innerWrapper: "![color:var(--theme-text)]",
   label: "!text-[color:var(--theme-text-soft)]",
   description: "text-[color:var(--theme-text-muted)]",
   trigger:
     "rounded-2xl border border-[color:var(--theme-border)] bg-[color:var(--theme-surface-soft)] data-[hover=true]:bg-[color:var(--theme-surface-soft)] data-[open=true]:bg-[color:var(--theme-surface-soft)]",
-  value: "!text-white",
+  value: "![color:var(--theme-text)]",
   selectorIcon: "text-[color:var(--theme-text-muted)]",
   popoverContent:
-    "rounded-2xl border border-[color:var(--theme-border)] bg-[color:var(--theme-surface-strong-soft)] text-white",
+    "rounded-2xl border border-[color:var(--theme-border)] bg-[color:var(--theme-surface-strong-soft)] text-[color:var(--theme-text)]",
 };
 
 function formatPrice(costPence: number) {
@@ -361,7 +361,7 @@ export default function AdminShopManagement({ initialItems }: Props) {
                   <div className="flex flex-wrap gap-2">
                     <Button
                       variant="flat"
-                      className="border border-[color:var(--theme-border)] bg-[color:var(--theme-surface-soft)] text-white"
+                      className="border border-[color:var(--theme-border)] bg-[color:var(--theme-surface-soft)] text-[color:var(--theme-text)]"
                       isDisabled={index === 0 || isBusy}
                       onPress={() => {
                         void handleMoveItem(item.id, "up");
@@ -371,7 +371,7 @@ export default function AdminShopManagement({ initialItems }: Props) {
                     </Button>
                     <Button
                       variant="flat"
-                      className="border border-[color:var(--theme-border)] bg-[color:var(--theme-surface-soft)] text-white"
+                      className="border border-[color:var(--theme-border)] bg-[color:var(--theme-surface-soft)] text-[color:var(--theme-text)]"
                       isDisabled={index === orderedItems.length - 1 || isBusy}
                       onPress={() => {
                         void handleMoveItem(item.id, "down");
@@ -491,7 +491,7 @@ export default function AdminShopManagement({ initialItems }: Props) {
                     as="a"
                     href={`/shop/${item.id}`}
                     variant="flat"
-                    className="border border-[color:var(--theme-border)] bg-[color:var(--theme-surface-soft)] text-white"
+                    className="border border-[color:var(--theme-border)] bg-[color:var(--theme-surface-soft)] text-[color:var(--theme-text)]"
                   >
                     View Item Page
                   </Button>
@@ -515,3 +515,4 @@ export default function AdminShopManagement({ initialItems }: Props) {
     </section>
   );
 }
+

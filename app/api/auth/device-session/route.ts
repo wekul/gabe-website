@@ -63,3 +63,4 @@ export async function DELETE() {
   await clearDeviceSessionCookie();
   return NextResponse.json({ ok: true });
 }
+

@@ -12,8 +12,8 @@ type Props = {
 const fieldClassNames = {
   inputWrapper:
     "rounded-2xl border border-[color:var(--theme-border)] bg-[color:var(--theme-surface-soft)] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] data-[hover=true]:bg-[color:var(--theme-surface-soft)] group-data-[focus=true]:border-[color:var(--theme-accent-strong)] group-data-[focus=true]:bg-[color:var(--theme-surface-soft)]",
-  input: "!text-white caret-white",
-  innerWrapper: "!text-white",
+  input: "![color:var(--theme-text)] caret-[color:var(--theme-text)]",
+  innerWrapper: "![color:var(--theme-text)]",
   label: "!text-[color:var(--theme-text-soft)]",
   description: "text-[color:var(--theme-text-muted)]",
 };
@@ -143,3 +143,4 @@ export default function AdminSecretsManagement({ initialSecret }: Props) {
     </section>
   );
 }
+

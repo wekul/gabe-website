@@ -234,3 +234,15 @@ model EmailServerSecret {
 
 
 
+model AppErrorLog {
+  id         String   @id @default(cuid())
+  source     String
+  message    String
+  stack      String?
+  context    Json?
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@index([createdAt(sort: Desc)])
+  @@index([source])
+  @@map("app_error_logs")
+}

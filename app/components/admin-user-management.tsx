@@ -24,18 +24,18 @@ function formatRoleName(roleName: string) {
 const fieldClassNames = {
   inputWrapper:
     "rounded-2xl border border-[color:var(--theme-border)] bg-[color:var(--theme-surface-soft)] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] data-[hover=true]:bg-[color:var(--theme-surface-soft)] group-data-[focus=true]:border-[color:var(--theme-accent-strong)] group-data-[focus=true]:bg-[color:var(--theme-surface-soft)] group-data-[invalid=true]:!border-red-500 group-data-[invalid=true]:!bg-[color:var(--theme-surface-soft)]",
-  input: "!text-white caret-white",
-  innerWrapper: "!text-white",
+  input: "![color:var(--theme-text)] caret-[color:var(--theme-text)]",
+  innerWrapper: "![color:var(--theme-text)]",
   label: "!text-[color:var(--theme-text-soft)]",
   description: "text-[color:var(--theme-text-muted)]",
   trigger:
     "rounded-2xl border border-[color:var(--theme-border)] bg-[color:var(--theme-surface-soft)] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] data-[hover=true]:bg-[color:var(--theme-surface-soft)] data-[open=true]:bg-[color:var(--theme-surface-soft)] group-data-[focus=true]:border-[color:var(--theme-accent-strong)] group-data-[invalid=true]:!border-red-500 group-data-[invalid=true]:!bg-[color:var(--theme-surface-soft)]",
-  value: "!text-white",
+  value: "![color:var(--theme-text)]",
   selectorIcon: "text-[color:var(--theme-text-muted)]",
-  listboxWrapper: "bg-[color:var(--theme-surface-strong-soft)] text-white",
-  listbox: "bg-[color:var(--theme-surface-strong-soft)] text-white",
+  listboxWrapper: "bg-[color:var(--theme-surface-strong-soft)] text-[color:var(--theme-text)]",
+  listbox: "bg-[color:var(--theme-surface-strong-soft)] text-[color:var(--theme-text)]",
   popoverContent:
-    "rounded-2xl border border-[color:var(--theme-border)] bg-[color:var(--theme-surface-strong-soft)] text-white",
+    "rounded-2xl border border-[color:var(--theme-border)] bg-[color:var(--theme-surface-strong-soft)] text-[color:var(--theme-text)]",
 };
 
 export default function AdminUserManagement({
@@ -315,7 +315,7 @@ export default function AdminUserManagement({
                   <Button
                     color="secondary"
                     variant="flat"
-                    className="border border-[color:var(--theme-border)] bg-white/[0.04] text-white"
+                    className="border border-[color:var(--theme-border)] bg-white/[0.04] text-[color:var(--theme-text)]"
                     isDisabled={isLocked || isBusy}
                     isLoading={isBusy}
                     onPress={() => {
@@ -346,3 +346,4 @@ export default function AdminUserManagement({
     </section>
   );
 }
+

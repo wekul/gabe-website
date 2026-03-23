@@ -25,6 +25,7 @@ export default async function AdminPage() {
   const hasVisiblePage =
     permissions.includes("view_analytics") ||
     canSeeLogs ||
+    permissions.includes("view_error_logs") ||
     permissions.includes("manage_theme") ||
     permissions.includes("manage_users") ||
     permissions.includes("manage_roles") ||
@@ -61,6 +62,7 @@ export default async function AdminPage() {
                 [
                   permissions.includes("view_analytics"),
                   canSeeLogs,
+                  permissions.includes("view_error_logs"),
                   permissions.includes("manage_theme"),
                   permissions.includes("manage_notifications"),
                   permissions.includes("manage_secrets"),
@@ -94,6 +96,18 @@ export default async function AdminPage() {
               <p className="text-[1.9rem] font-semibold tracking-[-0.05em] text-[color:var(--theme-text)]">Logs</p>
               <p className="mt-4 max-w-[22rem] text-[15px] leading-8 text-[color:var(--theme-text-muted)]">
                 Sessions, contact traffic, admin requests, and tracked image views.
+              </p>
+            </Link>
+          ) : null}
+
+          {permissions.includes("view_error_logs") ? (
+            <Link href="/admin/admin-logs" className={destinationCardClassName}>
+              <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.3em] text-[color:var(--theme-accent)] md:text-xs">
+                Diagnostics
+              </p>
+              <p className="text-[1.9rem] font-semibold tracking-[-0.05em] text-[color:var(--theme-text)]">Admin Logs</p>
+              <p className="mt-4 max-w-[22rem] text-[15px] leading-8 text-[color:var(--theme-text-muted)]">
+                Captured application errors, route failures, and server-side exceptions.
               </p>
             </Link>
           ) : null}

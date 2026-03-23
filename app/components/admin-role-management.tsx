@@ -20,6 +20,7 @@ const permissionLabels: Record<Permission, string> = {
   view_contact_messages: "View contact form messages",
   view_admin_messages: "View admin request messages",
   view_image_views: "View image tracking logs",
+  view_error_logs: "View application error logs",
   manage_theme: "Manage website theme",
   manage_users: "Manage users",
   manage_roles: "Manage roles and permissions",
@@ -39,8 +40,8 @@ function formatRoleName(roleName: string) {
 const fieldClassNames = {
   inputWrapper:
     "rounded-2xl border border-[color:var(--theme-border)] bg-[color:var(--theme-surface-soft)] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-sm data-[hover=true]:bg-[color:var(--theme-surface-soft)] group-data-[focus=true]:border-[color:var(--theme-accent-strong)] group-data-[focus=true]:bg-[color:var(--theme-surface-soft)] group-data-[invalid=true]:!border-red-500 group-data-[invalid=true]:!bg-[color:var(--theme-surface-soft)]",
-  input: "!text-white caret-white",
-  innerWrapper: "!text-white",
+  input: "![color:var(--theme-text)] caret-[color:var(--theme-text)]",
+  innerWrapper: "![color:var(--theme-text)]",
   label: "!text-[color:var(--theme-text-soft)]",
   description: "text-[color:var(--theme-text-muted)]",
 };
@@ -286,7 +287,7 @@ export default function AdminRoleManagement({
                         : current.filter((entry) => entry !== permission),
                     );
                   }}
-                  classNames={{ label: "text-white" }}
+                  classNames={{ label: "text-[color:var(--theme-text)]" }}
                 >
                   {permissionLabels[permission]}
                 </Checkbox>
@@ -396,7 +397,7 @@ export default function AdminRoleManagement({
                             onValueChange={(checked) => {
                               void handleExistingRolePermissionChange(role, permission, checked);
                             }}
-                            classNames={{ label: "text-white" }}
+                            classNames={{ label: "text-[color:var(--theme-text)]" }}
                           >
                             {permissionLabels[permission]}
                           </Checkbox>
@@ -448,3 +449,7 @@ export default function AdminRoleManagement({
     </section>
   );
 }
+
+
+
+

@@ -16,8 +16,8 @@ type Props = {
 const fieldClassNames = {
   inputWrapper:
     "rounded-2xl border border-[color:var(--theme-border)] bg-[color:var(--theme-surface-soft)] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] data-[hover=true]:bg-[color:var(--theme-surface-soft)] group-data-[focus=true]:border-[color:var(--theme-accent-strong)] group-data-[focus=true]:bg-[color:var(--theme-surface-soft)]",
-  input: "!text-white caret-white",
-  innerWrapper: "!text-white",
+  input: "![color:var(--theme-text)] caret-[color:var(--theme-text)]",
+  innerWrapper: "![color:var(--theme-text)]",
   label: "!text-[color:var(--theme-text-soft)]",
   description: "text-[color:var(--theme-text-muted)]",
 };
@@ -169,7 +169,7 @@ export default function AdminNotificationManagement({ initialConfig, availableUs
                         : current.recipientUserIds.filter((id) => id !== user.id),
                     }));
                   }}
-                  classNames={{ label: "text-white" }}
+                  classNames={{ label: "text-[color:var(--theme-text)]" }}
                 >
                   <span className="block font-medium">{user.name ?? user.username}</span>
                   <span className="block text-sm text-[color:var(--theme-text-muted)]">{user.email}</span>
@@ -227,3 +227,4 @@ export default function AdminNotificationManagement({ initialConfig, availableUs
     </section>
   );
 }
+

@@ -6,15 +6,15 @@ import { useState, type FormEvent } from "react";
 const inputClassNames = {
   inputWrapper:
     "bg-[color:var(--theme-surface-soft)] data-[hover=true]:bg-[color:var(--theme-surface-soft)] group-data-[focus=true]:bg-[color:var(--theme-surface-soft)] border border-[color:var(--theme-border)] rounded-2xl",
-  input: "!text-white caret-white",
-  innerWrapper: "!text-white",
+  input: "![color:var(--theme-text)] caret-[color:var(--theme-text)]",
+  innerWrapper: "![color:var(--theme-text)]",
   label: "text-[color:var(--theme-text-soft)]",
 };
 
 const textareaClassNames = {
   inputWrapper:
     "bg-[color:var(--theme-surface-soft)] data-[hover=true]:bg-[color:var(--theme-surface-soft)] group-data-[focus=true]:bg-[color:var(--theme-surface-soft)] border border-[color:var(--theme-border)] rounded-2xl",
-  input: "!text-white caret-white",
+  input: "![color:var(--theme-text)] caret-[color:var(--theme-text)]",
   label: "text-[color:var(--theme-text-soft)]",
 };
 
@@ -126,3 +126,4 @@ export default function ContactPage() {
     </section>
   );
 }
+

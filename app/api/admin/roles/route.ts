@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logServerError } from "@/lib/error-logging";
 import { createOrUpdateRole, deleteRole, listRoles, userHasPermission } from "@/lib/site-data";
 import { requireValidApiSession } from "@/lib/device-session";
 
@@ -54,6 +55,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ role });
   } catch (error) {
+    await logServerError(error, { source: "/api/admin/roles" });
     const message = error instanceof Error ? error.message : "Failed to save role.";
     return NextResponse.json({ error: message }, { status: 400 });
   }
@@ -70,7 +72,10 @@ export async function DELETE(request: Request) {
     await deleteRole(access.session.user.id, body.name ?? "");
     return NextResponse.json({ ok: true });
   } catch (error) {
+    await logServerError(error, { source: "/api/admin/roles" });
     const message = error instanceof Error ? error.message : "Failed to delete role.";
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }
+
+

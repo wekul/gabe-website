@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logServerError } from "@/lib/error-logging";
 import { createUser, listUsers, userHasPermission } from "@/lib/site-data";
 import { requireValidApiSession } from "@/lib/device-session";
 
@@ -51,7 +52,10 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ user });
   } catch (error) {
+    await logServerError(error, { source: "/api/admin/users" });
     const message = error instanceof Error ? error.message : "Failed to create user.";
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }
+
+

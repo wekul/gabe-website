@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logServerError } from "@/lib/error-logging";
 import type { DeliveryType } from "@prisma/client";
 import { requireValidApiSession } from "@/lib/device-session";
 import { deleteShopItem, moveShopItem, updateShopItem, userHasPermission } from "@/lib/site-data";
@@ -61,6 +62,7 @@ export async function PATCH(
 
     return NextResponse.json({ item });
   } catch (error) {
+    await logServerError(error, { source: "/api/admin/shop/[itemId]" });
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Failed to update item." },
       { status: 400 },
@@ -82,9 +84,12 @@ export async function DELETE(
     await deleteShopItem(session.user.id, itemId);
     return NextResponse.json({ ok: true });
   } catch (error) {
+    await logServerError(error, { source: "/api/admin/shop/[itemId]" });
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Failed to delete item." },
       { status: 400 },
     );
   }
 }
+
+

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logServerError } from "@/lib/error-logging";
 import { getSiteTheme, updateSiteTheme, userHasPermission } from "@/lib/site-data";
 import { requireValidApiSession } from "@/lib/device-session";
 import type { ThemeBackgroundStyle } from "@/lib/theme";
@@ -50,7 +51,10 @@ export async function POST(request: Request) {
     const theme = await updateSiteTheme(body);
     return NextResponse.json({ theme });
   } catch (error) {
+    await logServerError(error, { source: "/api/admin/theme" });
     const message = error instanceof Error ? error.message : "Failed to save theme.";
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }
+
+

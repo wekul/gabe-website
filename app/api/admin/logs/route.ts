@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logServerError } from "@/lib/error-logging";
 import { requireValidApiSession } from "@/lib/device-session";
 import {
   clearAnalyticsLogs,
@@ -113,7 +114,10 @@ export async function DELETE(request: Request) {
     const result = await clearAnalyticsLogs(target);
     return NextResponse.json({ ok: true, result });
   } catch (error) {
+    await logServerError(error, { source: "/api/admin/logs" });
     const message = error instanceof Error ? error.message : "Failed to clear logs.";
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }
+
+

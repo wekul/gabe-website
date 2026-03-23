@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logServerError } from "@/lib/error-logging";
 import { requireValidApiSession } from "@/lib/device-session";
 import {
   getDailyNotificationConfig,
@@ -62,7 +63,10 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ config });
   } catch (error) {
+    await logServerError(error, { source: "/api/admin/notifications" });
     const message = error instanceof Error ? error.message : "Failed to save notifications.";
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }
+
+

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logServerError } from "@/lib/error-logging";
 import { requireValidApiSession } from "@/lib/device-session";
 import {
   deleteUser,
@@ -53,6 +54,7 @@ export async function PATCH(
     const user = await updateUserRole(session.user.id, userId, body.role ?? "viewer");
     return NextResponse.json({ user });
   } catch (error) {
+    await logServerError(error, { source: "/api/admin/users/[userId]" });
     const message = error instanceof Error ? error.message : "Failed to update user.";
     return NextResponse.json({ error: message }, { status: 400 });
   }
@@ -80,7 +82,10 @@ export async function DELETE(
     await deleteUser(session.user.id, userId);
     return NextResponse.json({ ok: true });
   } catch (error) {
+    await logServerError(error, { source: "/api/admin/users/[userId]" });
     const message = error instanceof Error ? error.message : "Failed to delete user.";
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }
+
+

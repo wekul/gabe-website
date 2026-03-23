@@ -61,6 +61,15 @@ export type ImageViewRecord = {
   createdAt: string;
 };
 
+export type AppErrorLogRecord = {
+  id: string;
+  source: string;
+  message: string;
+  stack?: string;
+  context?: string;
+  createdAt: string;
+};
+
 export type ImageSpotlightRecord = {
   imageId: string;
   label: string;
@@ -208,6 +217,23 @@ function normalizeContactMessageReason(reason: string, adminMessage = false): Co
   throw new Error("Reason must be one of: General Query, Purchasing Query, Admin Access Request.");
 }
 
+function mapAppErrorLog(log: {
+  id: string;
+  source: string;
+  message: string;
+  stack: string | null;
+  context: unknown;
+  createdAt: Date;
+}): AppErrorLogRecord {
+  return {
+    id: log.id,
+    source: log.source,
+    message: log.message,
+    stack: log.stack ?? undefined,
+    context: log.context == null ? undefined : JSON.stringify(log.context, null, 2),
+    createdAt: log.createdAt.toISOString(),
+  };
+}
 function normalizeUsername(username: string) {
   const normalizedUsername = username.trim().toLowerCase();
 
@@ -1204,6 +1230,14 @@ export async function deleteShopItem(actorUserId: string, itemId: string) {
   });
 }
 
+export async function listAppErrorLogs() {
+  await ensureDatabase();
+  const logs = await prisma.appErrorLog.findMany({
+    orderBy: { createdAt: "desc" },
+    take: 500,
+  });
+  return logs.map(mapAppErrorLog);
+}
 export async function listRoles() {
   await ensureDatabase();
   const roles = await prisma.role.findMany({
@@ -1742,6 +1776,7 @@ export async function getAdminStats(): Promise<AdminStats> {
     roles: roles.map(mapRole),
   };
 }
+
 
 
 
