@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { logAdminAuditEvent } from "@/lib/audit-logging";
 import {
   clearDeviceSessionCookie,
   createDeviceSession,
@@ -25,6 +26,14 @@ export async function POST() {
 
   const deviceSession = await createDeviceSession(session.user.id);
   await setDeviceSessionCookie(deviceSession.token, deviceSession.expiresAt);
+
+  await logAdminAuditEvent(session.user.id, {
+    action: "login",
+    section: "authentication",
+    targetType: "path",
+    targetId: "/admin",
+    details: { via: "device_session" },
+  });
 
   return NextResponse.json({
     ok: true,
@@ -63,4 +72,3 @@ export async function DELETE() {
   await clearDeviceSessionCookie();
   return NextResponse.json({ ok: true });
 }
-

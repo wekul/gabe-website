@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logAdminAuditEvent } from "@/lib/audit-logging";
 import { logServerError } from "@/lib/error-logging";
 import { requireValidApiSession } from "@/lib/device-session";
 import {
@@ -38,7 +39,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   const session = await requireManageNotifications();
-  if (!session) {
+  if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -61,6 +62,20 @@ export async function POST(request: Request) {
       recipientUserIds: Array.isArray(body.recipientUserIds) ? body.recipientUserIds : [],
     });
 
+    await logAdminAuditEvent(session.user.id, {
+      action: "update_notifications",
+      section: "notifications",
+      targetType: "notification_config",
+      targetId: config.id,
+      details: {
+        enabled: config.enabled,
+        sendHour: config.sendHour,
+        sendMinute: config.sendMinute,
+        timezone: config.timezone,
+        recipientUserIds: config.recipientUserIds,
+      },
+    });
+
     return NextResponse.json({ config });
   } catch (error) {
     await logServerError(error, { source: "/api/admin/notifications" });
@@ -68,5 +83,3 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }
-
-

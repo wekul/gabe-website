@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logAdminAuditEvent } from "@/lib/audit-logging";
 import { logServerError } from "@/lib/error-logging";
 import { deleteContactMessage, userHasPermission } from "@/lib/site-data";
 import { requireValidApiSession } from "@/lib/device-session";
@@ -22,13 +23,19 @@ export async function DELETE(
   context: { params: Promise<{ messageId: string }> },
 ) {
   const session = await requireMessageDeleteAccess();
-  if (!session) {
+  if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
     const { messageId } = await context.params;
     await deleteContactMessage(messageId);
+    await logAdminAuditEvent(session.user.id, {
+      action: "delete_message",
+      section: "logs",
+      targetType: "message",
+      targetId: messageId,
+    });
     return NextResponse.json({ ok: true });
   } catch (error) {
     await logServerError(error, { source: "/api/admin/messages/[messageId]" });
@@ -36,5 +43,3 @@ export async function DELETE(
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }
-
-

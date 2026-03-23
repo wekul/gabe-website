@@ -20,6 +20,7 @@ model User {
   sessions               Session[]
   deviceSessions         DeviceSession[]
   notificationRecipients DailyNotificationRecipient[]
+  adminAuditLogs         AdminAuditLog[]
 
   @@map("users")
 }
@@ -246,3 +247,24 @@ model AppErrorLog {
   @@index([source])
   @@map("app_error_logs")
 }
+
+model AdminAuditLog {
+  id             String   @id @default(cuid())
+  userId         String?  @map("user_id")
+  userIdentifier String   @map("user_identifier")
+  userRole       String?  @map("user_role")
+  action         String
+  section        String
+  targetType     String?  @map("target_type")
+  targetId       String?  @map("target_id")
+  details        Json?
+  createdAt      DateTime @default(now()) @map("created_at")
+  user           User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt(sort: Desc)])
+  @@index([section])
+  @@index([action])
+  @@index([userId])
+  @@map("admin_audit_logs")
+}
+

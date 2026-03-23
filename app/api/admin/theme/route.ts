@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logAdminAuditEvent } from "@/lib/audit-logging";
 import { logServerError } from "@/lib/error-logging";
 import { getSiteTheme, updateSiteTheme, userHasPermission } from "@/lib/site-data";
 import { requireValidApiSession } from "@/lib/device-session";
@@ -30,7 +31,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   const session = await requireManageTheme();
-  if (!session) {
+  if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -49,6 +50,13 @@ export async function POST(request: Request) {
     };
 
     const theme = await updateSiteTheme(body);
+    await logAdminAuditEvent(session.user.id, {
+      action: "update_theme",
+      section: "theme",
+      targetType: "theme",
+      targetId: "default",
+      details: body,
+    });
     return NextResponse.json({ theme });
   } catch (error) {
     await logServerError(error, { source: "/api/admin/theme" });
@@ -56,5 +64,3 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }
-
-

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logAdminAuditEvent } from "@/lib/audit-logging";
 import { logServerError } from "@/lib/error-logging";
 import { requireValidApiSession } from "@/lib/device-session";
 import { getEmailServerSecret, updateEmailServerSecret, userHasPermission } from "@/lib/site-data";
@@ -29,7 +30,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   const session = await requireManageSecrets();
-  if (!session) {
+  if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -52,6 +53,20 @@ export async function POST(request: Request) {
       defaultFromEmail: body.defaultFromEmail ?? "",
     });
 
+    await logAdminAuditEvent(session.user.id, {
+      action: "update_secrets",
+      section: "secrets_manager",
+      targetType: "email_server",
+      targetId: secret.id,
+      details: {
+        host: secret.host,
+        port: secret.port,
+        secure: secret.secure,
+        username: secret.username,
+        hasPassword: secret.hasPassword,
+      },
+    });
+
     return NextResponse.json({ secret });
   } catch (error) {
     await logServerError(error, { source: "/api/admin/secrets" });
@@ -61,5 +76,3 @@ export async function POST(request: Request) {
     );
   }
 }
-
-

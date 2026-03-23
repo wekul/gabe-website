@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logAdminAuditEvent } from "@/lib/audit-logging";
 import { logServerError } from "@/lib/error-logging";
 import type { DeliveryType } from "@prisma/client";
 import { requireValidApiSession } from "@/lib/device-session";
@@ -57,6 +58,14 @@ export async function POST(request: Request) {
       quantity: typeof body.quantity === "number" ? body.quantity : null,
     });
 
+    await logAdminAuditEvent(session.user.id, {
+      action: "create_shop_item",
+      section: "shop",
+      targetType: "shop_item",
+      targetId: item.id,
+      details: { title: item.title, deliveryType: item.deliveryType },
+    });
+
     return NextResponse.json({ item });
   } catch (error) {
     await logServerError(error, { source: "/api/admin/shop" });
@@ -66,5 +75,3 @@ export async function POST(request: Request) {
     );
   }
 }
-
-

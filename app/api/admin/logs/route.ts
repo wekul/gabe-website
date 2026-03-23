@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { logServerError } from "@/lib/error-logging";
+import { listAdminAuditLogs, logAdminAuditEvent } from "@/lib/audit-logging";
 import { requireValidApiSession } from "@/lib/device-session";
 import {
   clearAnalyticsLogs,
@@ -85,9 +86,9 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const stats = await getAdminStats();
+  const [stats, auditLogs] = await Promise.all([getAdminStats(), listAdminAuditLogs()]);
 
-  const messages = stats.contactMessages.filter((message) => {
+  const messages = stats.contactMessages.filter((message: (typeof stats.contactMessages)[number]) => {
     if (message.adminMessage) {
       return access.permissions.view_admin_messages;
     }
@@ -99,6 +100,7 @@ export async function GET() {
     sessions: access.permissions.view_sessions ? stats.recentSessions : [],
     messages,
     imageViews: access.permissions.view_image_views ? stats.imageViews : [],
+    auditLogs,
     fetchedAt: new Date().toISOString(),
   });
 }
@@ -112,6 +114,15 @@ export async function DELETE(request: Request) {
   try {
     const target = await getDeleteTarget(request);
     const result = await clearAnalyticsLogs(target);
+
+    await logAdminAuditEvent(access.session.user.id, {
+      action: "clear_logs",
+      section: "logs",
+      targetType: "log_target",
+      targetId: target,
+      details: result,
+    });
+
     return NextResponse.json({ ok: true, result });
   } catch (error) {
     await logServerError(error, { source: "/api/admin/logs" });
@@ -119,5 +130,4 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }
-
 

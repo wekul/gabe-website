@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logAdminAuditEvent } from "@/lib/audit-logging";
 import { logServerError } from "@/lib/error-logging";
 import { requireValidApiSession } from "@/lib/device-session";
 import {
@@ -48,10 +49,23 @@ export async function PATCH(
 
     if (typeof body.password === "string" && body.password.trim()) {
       await updateUserPassword(session.user.id, userId, body.password);
+      await logAdminAuditEvent(session.user.id, {
+        action: "reset_user_password",
+        section: "users",
+        targetType: "user",
+        targetId: userId,
+      });
       return NextResponse.json({ ok: true });
     }
 
     const user = await updateUserRole(session.user.id, userId, body.role ?? "viewer");
+    await logAdminAuditEvent(session.user.id, {
+      action: "update_user_role",
+      section: "users",
+      targetType: "user",
+      targetId: userId,
+      details: { role: user.role },
+    });
     return NextResponse.json({ user });
   } catch (error) {
     await logServerError(error, { source: "/api/admin/users/[userId]" });
@@ -80,6 +94,12 @@ export async function DELETE(
     }
 
     await deleteUser(session.user.id, userId);
+    await logAdminAuditEvent(session.user.id, {
+      action: "delete_user",
+      section: "users",
+      targetType: "user",
+      targetId: userId,
+    });
     return NextResponse.json({ ok: true });
   } catch (error) {
     await logServerError(error, { source: "/api/admin/users/[userId]" });
@@ -87,5 +107,3 @@ export async function DELETE(
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }
-
-

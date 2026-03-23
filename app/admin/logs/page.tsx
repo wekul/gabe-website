@@ -1,4 +1,5 @@
 import { getAdminStats, getUserPermissions } from "@/lib/site-data";
+import { listAdminAuditLogs } from "@/lib/audit-logging";
 import { redirect } from "next/navigation";
 import AdminBackLink from "@/app/components/admin-back-link";
 import AdminSignOut from "@/app/components/admin-signout";
@@ -24,11 +25,11 @@ export default async function AdminLogsPage() {
     redirect("/unauthorised?from=logs");
   }
 
-  const stats = await getAdminStats();
+  const [stats, auditLogs] = await Promise.all([getAdminStats(), listAdminAuditLogs()]);
   const canSeeContactMessages = permissions.includes("view_contact_messages");
   const canSeeAdminMessages = permissions.includes("view_admin_messages");
 
-  const visibleMessages = stats.contactMessages.filter((message) => {
+  const visibleMessages = stats.contactMessages.filter((message: (typeof stats.contactMessages)[number]) => {
     if (message.adminMessage) {
       return canSeeAdminMessages;
     }
@@ -40,10 +41,9 @@ export default async function AdminLogsPage() {
     <AdminShell
       eyebrow="Activity"
       title="Logs"
-      description="Searchable operational records for visitor sessions, message traffic, and tracked image views."
+      description="Searchable operational records for visitor sessions, message traffic, tracked image views, and admin audit activity."
       actions={
         <>
-          {/* {permissions.includes("clear_anayltics") ? <AdminClearLogsButton /> : null} */}
           <AdminBackLink />
           <AdminSignOut />
         </>
@@ -53,8 +53,10 @@ export default async function AdminLogsPage() {
         sessions={permissions.includes("view_sessions") ? stats.recentSessions : []}
         messages={visibleMessages}
         imageViews={permissions.includes("view_image_views") ? stats.imageViews : []}
+        auditLogs={auditLogs}
         permissions={permissions}
       />
     </AdminShell>
   );
 }
+

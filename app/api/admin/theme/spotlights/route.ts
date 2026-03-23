@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logAdminAuditEvent } from "@/lib/audit-logging";
 import { logServerError } from "@/lib/error-logging";
 import { listImageSpotlights, setImageSpotlight, userHasPermission } from "@/lib/site-data";
 import { requireValidApiSession } from "@/lib/device-session";
@@ -29,7 +30,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   const session = await requireManageTheme();
-  if (!session) {
+  if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -40,6 +41,13 @@ export async function POST(request: Request) {
     };
 
     const spotlight = await setImageSpotlight(body.imageId ?? "", Boolean(body.enabled));
+    await logAdminAuditEvent(session.user.id, {
+      action: "update_spotlight",
+      section: "theme",
+      targetType: "image",
+      targetId: spotlight.imageId,
+      details: { enabled: spotlight.enabled },
+    });
     return NextResponse.json({ spotlight });
   } catch (error) {
     await logServerError(error, { source: "/api/admin/theme/spotlights" });
@@ -47,5 +55,3 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }
-
-

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logAdminAuditEvent } from "@/lib/audit-logging";
 import { logServerError } from "@/lib/error-logging";
 import { requireValidApiSession } from "@/lib/device-session";
 import { sendTestNotificationEmail } from "@/lib/notifications";
@@ -16,6 +17,12 @@ export async function POST() {
 
   try {
     await sendTestNotificationEmail();
+    await logAdminAuditEvent(session.user.id, {
+      action: "send_test_notification",
+      section: "notifications",
+      targetType: "notification_config",
+      targetId: "default",
+    });
     return NextResponse.json({ ok: true });
   } catch (error) {
     await logServerError(error, { source: "/api/admin/notifications/test" });
@@ -25,5 +32,3 @@ export async function POST() {
     );
   }
 }
-
-

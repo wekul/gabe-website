@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logAdminAuditEvent } from "@/lib/audit-logging";
 import { logServerError } from "@/lib/error-logging";
 import { createUser, listUsers, userHasPermission } from "@/lib/site-data";
 import { requireValidApiSession } from "@/lib/device-session";
@@ -50,6 +51,14 @@ export async function POST(request: Request) {
       role: body.role ?? "viewer",
     });
 
+    await logAdminAuditEvent(session.user.id, {
+      action: "create_user",
+      section: "users",
+      targetType: "user",
+      targetId: user.id,
+      details: { username: user.username, role: user.role },
+    });
+
     return NextResponse.json({ user });
   } catch (error) {
     await logServerError(error, { source: "/api/admin/users" });
@@ -57,5 +66,3 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }
-
-

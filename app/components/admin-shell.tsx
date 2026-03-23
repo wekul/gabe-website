@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import AdminAuditTracker from "@/app/components/admin-audit-tracker";
 
 type Props = {
   eyebrow: string;
@@ -17,6 +18,7 @@ export default function AdminShell({
 }: Props) {
   return (
     <section className="w-full text-[color:var(--theme-text)]">
+      <AdminAuditTracker />
       <div className="w-full border-t border-[color:var(--theme-border)] bg-[radial-gradient(circle_at_var(--theme-glow-anchor-x)_var(--theme-glow-anchor-y),var(--theme-accent-soft),transparent_26%),linear-gradient(180deg,var(--theme-surface-soft),rgba(255,255,255,0.02))]">
         <div className="w-full px-5 py-8 md:px-8 md:py-10 xl:px-12 xl:py-12 2xl:px-16">
           <div className="mb-12 border-b border-[color:var(--theme-border)] pb-10">

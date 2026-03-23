@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logAdminAuditEvent } from "@/lib/audit-logging";
 import { logServerError } from "@/lib/error-logging";
 import { createOrUpdateRole, deleteRole, listRoles, userHasPermission } from "@/lib/site-data";
 import { requireValidApiSession } from "@/lib/device-session";
@@ -53,6 +54,14 @@ export async function POST(request: Request) {
       rank: body.rank,
     });
 
+    await logAdminAuditEvent(access.session.user.id, {
+      action: "save_role",
+      section: "roles",
+      targetType: "role",
+      targetId: role.name,
+      details: { rank: role.rank, permissions: role.permissions },
+    });
+
     return NextResponse.json({ role });
   } catch (error) {
     await logServerError(error, { source: "/api/admin/roles" });
@@ -70,6 +79,12 @@ export async function DELETE(request: Request) {
   try {
     const body = (await request.json()) as { name?: string };
     await deleteRole(access.session.user.id, body.name ?? "");
+    await logAdminAuditEvent(access.session.user.id, {
+      action: "delete_role",
+      section: "roles",
+      targetType: "role",
+      targetId: body.name ?? "",
+    });
     return NextResponse.json({ ok: true });
   } catch (error) {
     await logServerError(error, { source: "/api/admin/roles" });
@@ -77,5 +92,3 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: message }, { status: 400 });
   }
 }
-
-

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { logAdminAuditEvent } from "@/lib/audit-logging";
 import { logServerError } from "@/lib/error-logging";
 import type { DeliveryType } from "@prisma/client";
 import { requireValidApiSession } from "@/lib/device-session";
@@ -45,6 +46,13 @@ export async function PATCH(
 
     if (body.direction === "up" || body.direction === "down") {
       const item = await moveShopItem(session.user.id, itemId, body.direction);
+      await logAdminAuditEvent(session.user.id, {
+        action: "move_shop_item",
+        section: "shop",
+        targetType: "shop_item",
+        targetId: itemId,
+        details: { direction: body.direction, displayOrder: item.displayOrder },
+      });
       return NextResponse.json({ item });
     }
 
@@ -58,6 +66,18 @@ export async function PATCH(
       displayOrder: typeof body.displayOrder === "number" ? body.displayOrder : undefined,
       quantityTracked: Boolean(body.quantityTracked),
       quantity: typeof body.quantity === "number" ? body.quantity : null,
+    });
+
+    await logAdminAuditEvent(session.user.id, {
+      action: "update_shop_item",
+      section: "shop",
+      targetType: "shop_item",
+      targetId: itemId,
+      details: {
+        title: item.title,
+        deliveryType: item.deliveryType,
+        quantityTracked: item.quantityTracked,
+      },
     });
 
     return NextResponse.json({ item });
@@ -82,6 +102,12 @@ export async function DELETE(
   try {
     const { itemId } = await context.params;
     await deleteShopItem(session.user.id, itemId);
+    await logAdminAuditEvent(session.user.id, {
+      action: "delete_shop_item",
+      section: "shop",
+      targetType: "shop_item",
+      targetId: itemId,
+    });
     return NextResponse.json({ ok: true });
   } catch (error) {
     await logServerError(error, { source: "/api/admin/shop/[itemId]" });
@@ -91,5 +117,3 @@ export async function DELETE(
     );
   }
 }
-
-
