@@ -91,8 +91,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ url: session.url });
   } catch (error) {
     await logServerError(error, { source: "/api/shop/checkout" });
-    const message = error instanceof Error ? error.message : "Unable to start checkout.";
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json(
+      { error: "Checkout is currently unavailable. Please try again later or contact the site administrator." },
+      { status: 500 },
+    );
   }
 }
 
