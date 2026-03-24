@@ -20,3 +20,13 @@ export function getStripeServer() {
 
   return globalThis.__stripe__;
 }
+
+export function getStripeWebhookSecret() {
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+  if (!webhookSecret) {
+    throw new Error("STRIPE_WEBHOOK_SECRET is required.");
+  }
+
+  return webhookSecret;
+}

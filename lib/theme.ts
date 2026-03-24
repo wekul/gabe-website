@@ -15,6 +15,9 @@ export type SiteThemeValues = {
   surfaceStrong: string;
   text: string;
   mutedText: string;
+  pageEditorBetaEnabled: boolean;
+  announcementEnabled: boolean;
+  announcementText: string;
 };
 
 export type ThemePreset = {
@@ -35,6 +38,9 @@ export const DEFAULT_SITE_THEME: SiteThemeValues = {
   surfaceStrong: "#030712",
   text: "#F8FAFC",
   mutedText: "#CBD5E1",
+  pageEditorBetaEnabled: false,
+  announcementEnabled: false,
+  announcementText: "",
 };
 
 export const THEME_PRESETS: ThemePreset[] = [
@@ -59,6 +65,9 @@ export const THEME_PRESETS: ThemePreset[] = [
       surfaceStrong: "#CFC0AA",
       text: "#211A15",
       mutedText: "#54483C",
+      pageEditorBetaEnabled: false,
+      announcementEnabled: false,
+      announcementText: "",
     },
   },
   {
@@ -76,6 +85,9 @@ export const THEME_PRESETS: ThemePreset[] = [
       surfaceStrong: "#ECE4D7",
       text: "#1F1A17",
       mutedText: "#6C6359",
+      pageEditorBetaEnabled: false,
+      announcementEnabled: false,
+      announcementText: "",
     },
   },
   {
@@ -93,6 +105,9 @@ export const THEME_PRESETS: ThemePreset[] = [
       surfaceStrong: "#050811",
       text: "#F8FAFC",
       mutedText: "#A8B3C7",
+      pageEditorBetaEnabled: false,
+      announcementEnabled: false,
+      announcementText: "",
     },
   },
 ];
@@ -274,6 +289,9 @@ export function buildThemeCssVariables(theme: SiteThemeValues) {
     ),
     text: normalizeHexColor(theme.text, DEFAULT_SITE_THEME.text),
     mutedText: normalizeHexColor(theme.mutedText, DEFAULT_SITE_THEME.mutedText),
+    pageEditorBetaEnabled: Boolean(theme.pageEditorBetaEnabled),
+    announcementEnabled: Boolean(theme.announcementEnabled),
+    announcementText: theme.announcementText?.trim() ?? "",
   };
 
   const intensityFactor = normalizedTheme.gradientIntensity / 100;
@@ -310,3 +328,4 @@ export function buildThemeCssVariables(theme: SiteThemeValues) {
     "--foreground": normalizedTheme.text,
   } as Record<string, string>;
 }
+

@@ -189,8 +189,11 @@ model SiteTheme {
   accent            String
   surface           String
   surfaceStrong     String @map("surface_strong")
-  text              String
-  mutedText         String @map("muted_text")
+  text                  String
+  mutedText             String  @map("muted_text")
+  pageEditorBetaEnabled Boolean @default(false) @map("page_editor_beta_enabled")
+  announcementEnabled   Boolean @default(false) @map("announcement_enabled")
+  announcementText      String  @default("") @map("announcement_text")
 
   @@map("site_theme")
 }
@@ -235,6 +238,64 @@ model EmailServerSecret {
 
 
 
+model StripeWebhookEvent {
+  id                String    @id
+  type              String
+  livemode          Boolean   @default(false)
+  status            String    @default("received")
+  checkoutSessionId String?   @map("checkout_session_id")
+  itemId            String?   @map("item_id")
+  quantity          Int?
+  payload           Json?
+  errorMessage      String?   @map("error_message")
+  receivedAt        DateTime  @default(now()) @map("received_at")
+  processedAt       DateTime? @map("processed_at")
+
+  @@index([type, receivedAt(sort: Desc)])
+  @@index([status, receivedAt(sort: Desc)])
+  @@map("stripe_webhook_events")
+}
+
+model PageContentBlock {
+  id        String   @id @default(cuid())
+  pageKey   String   @map("page_key")
+  blockKey  String   @map("block_key")
+  value     String
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([pageKey, blockKey])
+  @@index([pageKey])
+  @@map("page_content_blocks")
+}
+model PageContentItem {
+  id           String   @id @default(cuid())
+  pageKey      String   @map("page_key")
+  slotKey      String   @map("slot_key")
+  title        String
+  body         String
+  imageUrl     String?  @map("image_url")
+  linkLabel    String?  @map("link_label")
+  linkHref     String?  @map("link_href")
+  displayOrder Int      @default(0) @map("display_order")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@index([pageKey, slotKey, displayOrder])
+  @@map("page_content_items")
+}
+model PageContentVersion {
+  id                  String   @id @default(cuid())
+  pageKey             String   @map("page_key")
+  snapshot            Json
+  label               String?
+  createdByUserId     String?  @map("created_by_user_id")
+  createdByIdentifier String?  @map("created_by_identifier")
+  createdAt           DateTime @default(now()) @map("created_at")
+
+  @@index([pageKey, createdAt(sort: Desc)])
+  @@map("page_content_versions")
+}
+
 model AppErrorLog {
   id         String   @id @default(cuid())
   source     String
@@ -246,6 +307,26 @@ model AppErrorLog {
   @@index([createdAt(sort: Desc)])
   @@index([source])
   @@map("app_error_logs")
+}
+
+model CriticalErrorLog {
+  id              String    @id @default(cuid())
+  source          String
+  path            String?
+  message         String
+  stack           String?
+  digest          String?
+  userId          String?   @map("user_id")
+  userIdentifier  String?   @map("user_identifier")
+  context         Json?
+  emailNotifiedAt DateTime? @map("email_notified_at")
+  emailError      String?   @map("email_error")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  @@index([createdAt(sort: Desc)])
+  @@index([source])
+  @@index([path])
+  @@map("critical_error_logs")
 }
 
 model AdminAuditLog {
@@ -267,4 +348,8 @@ model AdminAuditLog {
   @@index([userId])
   @@map("admin_audit_logs")
 }
+
+
+
+
 

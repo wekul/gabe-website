@@ -6,6 +6,7 @@ import Providers from "@/app/providers";
 import VisitorTracker from "@/app/components/visitor-tracker";
 import ImageSpotlightManager from "@/app/components/image-spotlight-manager";
 import CookieConsentBanner from "@/app/components/cookie-consent-banner";
+import AnnouncementBanner from "@/app/components/announcement-banner";
 import DeviceSessionGuard from "@/app/components/device-session-guard";
 import { getEnabledImageSpotlightIds, getSiteTheme } from "@/lib/site-data";
 import { DEFAULT_SITE_THEME, buildThemeCssVariables } from "@/lib/theme";
@@ -49,6 +50,9 @@ export default async function RootLayout({
           <DeviceSessionGuard />
           <VisitorTracker />
           <ImageSpotlightManager enabledImageIds={enabledImageSpotlightIds} />
+          {siteTheme.announcementEnabled && siteTheme.announcementText.trim() ? (
+            <AnnouncementBanner text={siteTheme.announcementText} />
+          ) : null}
           <header className="site-header">
             <h1 className="site-title">Matthaus Addy</h1>
             <MobileNav />
@@ -60,12 +64,12 @@ export default async function RootLayout({
               href="https://github.com/wekul/gabe-website"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Developed by wekul on GitHub"
+              aria-label="Hosted by wekul"
               className="footer-link"
               data-track-image="footer-github-icon"
             >
               <span className="footer-icon" aria-hidden="true" />
-              <span className="footer-label">Developed by wekul</span>
+              <span className="footer-label">Hosted by wekul</span>
             </a>
           </div>
         </Providers>

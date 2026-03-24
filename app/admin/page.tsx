@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getUserPermissions } from "@/lib/site-data";
+import { getSiteTheme, getUserPermissions } from "@/lib/site-data";
 import { redirect } from "next/navigation";
 import AdminBackLink from "@/app/components/admin-back-link";
 import AdminShell from "@/app/components/admin-shell";
@@ -14,7 +14,10 @@ export default async function AdminPage() {
     redirect("/login");
   }
 
-  const permissions = await getUserPermissions(session.user.id);
+  const [permissions, siteTheme] = await Promise.all([
+    getUserPermissions(session.user.id),
+    getSiteTheme(),
+  ]);
 
   const canSeeLogs =
     permissions.includes("view_sessions") ||
@@ -27,6 +30,7 @@ export default async function AdminPage() {
     canSeeLogs ||
     permissions.includes("view_error_logs") ||
     permissions.includes("manage_theme") ||
+    (permissions.includes("manage_pages") && siteTheme.pageEditorBetaEnabled) ||
     permissions.includes("manage_users") ||
     permissions.includes("manage_roles") ||
     permissions.includes("manage_notifications") ||
@@ -67,6 +71,7 @@ export default async function AdminPage() {
                   permissions.includes("manage_notifications"),
                   permissions.includes("manage_secrets"),
                   permissions.includes("manage_shop"),
+                  permissions.includes("manage_pages") && siteTheme.pageEditorBetaEnabled,
                   permissions.includes("manage_users"),
                   permissions.includes("manage_roles"),
                 ].filter(Boolean).length
@@ -120,6 +125,19 @@ export default async function AdminPage() {
               <p className="text-[1.9rem] font-semibold tracking-[-0.05em] text-[color:var(--theme-text)]">Theme</p>
               <p className="mt-4 max-w-[22rem] text-[15px] leading-8 text-[color:var(--theme-text-muted)]">
                 Control the visual direction, palette, and gradients across the site.
+              </p>
+            </Link>
+          ) : null}
+
+
+          {permissions.includes("manage_pages") && siteTheme.pageEditorBetaEnabled ? (
+            <Link href="/admin/pages/home" className={destinationCardClassName}>
+              <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.3em] text-[color:var(--theme-accent)] md:text-xs">
+                Publishing
+              </p>
+              <p className="text-[1.9rem] font-semibold tracking-[-0.05em] text-[color:var(--theme-text)]">Page Editor</p>
+              <p className="mt-4 max-w-[22rem] text-[15px] leading-8 text-[color:var(--theme-text-muted)]">
+                Open the dedicated page studio to edit built-in sections, custom items, layout, and version history.
               </p>
             </Link>
           ) : null}
@@ -188,3 +206,5 @@ export default async function AdminPage() {
     </AdminShell>
   );
 }
+
+

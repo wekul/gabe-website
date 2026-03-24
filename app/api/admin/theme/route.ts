@@ -47,6 +47,8 @@ export async function POST(request: Request) {
       surfaceStrong?: string;
       text?: string;
       mutedText?: string;
+      announcementEnabled?: boolean;
+      announcementText?: string;
     };
 
     const theme = await updateSiteTheme(body);

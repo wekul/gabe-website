@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Input, Switch } from "@heroui/react";
+import { Button, Input, Switch, Textarea } from "@heroui/react";
 import { useMemo, useState, type CSSProperties, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import type { ImageSpotlightRecord, SiteThemeRecord } from "@/lib/site-data";
@@ -17,7 +17,7 @@ type Props = {
 };
 
 type ColorThemeField = {
-  key: Exclude<keyof SiteThemeRecord, "backgroundStyle" | "gradientDirection" | "gradientIntensity">;
+  key: Exclude<keyof SiteThemeRecord, "backgroundStyle" | "gradientDirection" | "gradientIntensity" | "pageEditorBetaEnabled" | "announcementEnabled" | "announcementText">;
   label: string;
   description: string;
 };
@@ -359,6 +359,83 @@ export default function AdminThemeManagement({
                   }}
                 />
               </div>
+            </div>
+          </div>
+
+          <div className="theme-card rounded-[1.25rem] p-4 md:p-5">
+            <div className="mb-4">
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[color:var(--theme-text-soft)]">
+                Beta Features
+              </p>
+              <p className="mt-2 text-sm text-[color:var(--theme-text-muted)]">
+                Turn experimental tooling on only when you want editors to access it.
+              </p>
+            </div>
+
+            <div className="theme-subpanel rounded-[1.25rem] p-4">
+              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <p className="text-base font-semibold text-[color:var(--theme-text)]">Page Editing (Beta)</p>
+                  <p className="mt-1 text-sm text-[color:var(--theme-text-muted)]">
+                    Enables Edit Page links, the page studio route, and page-content APIs for users with the page-edit permission.
+                  </p>
+                </div>
+                <Switch
+                  isSelected={theme.pageEditorBetaEnabled}
+                  color="primary"
+                  onValueChange={(value) => {
+                    setTheme((current) => ({ ...current, pageEditorBetaEnabled: value }));
+                    setStatusMessage(value ? "Page editing beta enabled. Save to persist it." : "Page editing beta disabled. Save to persist it.");
+                  }}
+                >
+                  {theme.pageEditorBetaEnabled ? "Enabled" : "Disabled"}
+                </Switch>
+              </div>
+            </div>
+          </div>
+
+          <div className="theme-card rounded-[1.25rem] p-4 md:p-5">
+            <div className="mb-4">
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[color:var(--theme-text-soft)]">
+                Announcement Banner
+              </p>
+              <p className="mt-2 text-sm text-[color:var(--theme-text-muted)]">
+                Show a global banner above the header. It only appears on the site when enabled and the message has content.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <div className="theme-subpanel rounded-[1.25rem] p-4">
+                <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                  <div>
+                    <p className="text-base font-semibold text-[color:var(--theme-text)]">Announcement Status</p>
+                    <p className="mt-1 text-sm text-[color:var(--theme-text-muted)]">
+                      Disable this to hide the banner everywhere without deleting the announcement text.
+                    </p>
+                  </div>
+                  <Switch
+                    isSelected={theme.announcementEnabled}
+                    color="primary"
+                    onValueChange={(value) => {
+                      setTheme((current) => ({ ...current, announcementEnabled: value }));
+                      setStatusMessage(value ? "Announcement enabled. Save to publish it." : "Announcement disabled. Save to hide it.");
+                    }}
+                  >
+                    {theme.announcementEnabled ? "Enabled" : "Disabled"}
+                  </Switch>
+                </div>
+              </div>
+
+              <Textarea
+                label="Announcement Text"
+                minRows={3}
+                description="Short site-wide message shown above the header."
+                value={theme.announcementText}
+                classNames={fieldClassNames}
+                onValueChange={(value) => {
+                  setTheme((current) => ({ ...current, announcementText: value }));
+                }}
+              />
             </div>
           </div>
 

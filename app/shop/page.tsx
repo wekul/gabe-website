@@ -1,6 +1,18 @@
 import Link from "next/link";
-import { listShopItems } from "@/lib/site-data";
+import EditablePageValue from "@/app/components/editable-page-value";
+import PageContentItems from "@/app/components/page-content-items";
+import PageEditLink from "@/app/components/page-edit-link";
+import PageEditorBuiltInBlock from "@/app/components/page-editor-built-in-block";
+import { PageEditorProvider } from "@/app/components/page-editor-provider";
 import ShopCardImage from "@/app/components/shop-card-image";
+import { PAGE_BUILTIN_LAYOUT_DEFAULTS } from "@/lib/page-content-shared";
+import {
+  canCurrentUserManagePages,
+  getPageBuiltinLayout,
+  getPageContent,
+  getPageContentItems,
+} from "@/lib/page-content";
+import { listShopItems } from "@/lib/site-data";
 
 export const dynamic = "force-dynamic";
 
@@ -28,56 +40,87 @@ function getBadgeText(item: {
 }
 
 export default async function ShopPage() {
-  const items = await listShopItems();
+  const [items, content, layout, pageItems, canManagePages] = await Promise.all([
+    listShopItems(),
+    getPageContent("shop"),
+    getPageBuiltinLayout("shop"),
+    getPageContentItems("shop"),
+    canCurrentUserManagePages(),
+  ]);
 
   return (
-    <section className="public-shell !max-w-none">
-      <div className="public-panel w-full text-[color:var(--theme-text)]">
-        <div className="mx-auto w-full max-w-[120rem] px-1 md:px-3">
-          <div className="mb-10 text-center">
-            <p className="public-kicker !mb-3">Selected Works</p>
-            <h2 className="mx-auto max-w-[10ch] text-4xl font-semibold tracking-[-0.05em] text-[color:var(--theme-text)] md:text-5xl xl:text-6xl">
-              Shop
-            </h2>
-          </div>
-
-          {items.length === 0 ? (
-            <p className="mx-auto max-w-2xl text-center text-base leading-8 text-[color:var(--theme-text-muted)]">
-              No items are available yet.
-            </p>
-          ) : (
-            <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
-              {items.map((item) => (
-                <Link key={item.id} href={`/shop/${item.id}`} className="group block text-center">
-                  <article>
-                    <div className="relative overflow-hidden rounded-[1.6rem] border border-[color:var(--theme-border)] bg-[color:var(--theme-surface-soft)] p-3 shadow-[0_20px_60px_color-mix(in_srgb,var(--theme-shadow)_18%,transparent)] transition-transform duration-200 group-hover:-translate-y-1">
-                      <div className="absolute left-6 top-6 z-10 rounded-full border border-[color:var(--theme-border)] bg-[color:var(--theme-surface-strong-soft)] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--theme-text)] shadow-[0_4px_12px_color-mix(in_srgb,var(--theme-shadow)_12%,transparent)]">
-                        {getBadgeText(item)}
-                      </div>
-                      <div className="overflow-hidden rounded-[1.25rem] bg-[color:var(--theme-surface-strong-soft)]">
-                        <ShopCardImage
-                          src={item.imageUrl}
-                          alt={item.title}
-                          className="h-[26rem] w-full object-cover transition-transform duration-500 group-hover:scale-[1.02] md:h-[32rem] xl:h-[34rem]"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="px-3 pb-2 pt-5">
-                      <h3 className="text-2xl font-semibold tracking-[-0.04em] text-[color:var(--theme-text)] underline decoration-[color:var(--theme-accent)] underline-offset-[0.16em]">
-                        {item.title}
-                      </h3>
-                      <p className="mt-2 text-xl font-semibold text-[color:var(--theme-accent)]">
-                        {formatPrice(item.costPence)}
-                      </p>
-                    </div>
-                  </article>
-                </Link>
-              ))}
+    <PageEditorProvider initialContent={content} initialLayout={layout} initialItems={pageItems} canEdit={false}>
+      <section className="public-shell !max-w-none">
+        <div className="public-panel w-full text-[color:var(--theme-text)]">
+          <div className="mx-auto w-full max-w-[120rem] px-1 md:px-3">
+            <div className="page-freeform-region shop-header-freeform">
+              {Array.from(PAGE_BUILTIN_LAYOUT_DEFAULTS.shop.header).map((blockKey) => {
+                if (blockKey === "kicker") {
+                  return (
+                    <PageEditorBuiltInBlock key={blockKey} pageKey="shop" regionKey="header" blockKey={blockKey} label="Eyebrow">
+                      <p className="public-kicker !mb-3"><EditablePageValue fieldKey="kicker" initialValue={content.kicker} /></p>
+                    </PageEditorBuiltInBlock>
+                  );
+                }
+                return (
+                  <PageEditorBuiltInBlock key={blockKey} pageKey="shop" regionKey="header" blockKey={blockKey} label="Title">
+                    <h2 className="max-w-[10ch] text-4xl font-semibold tracking-[-0.05em] text-[color:var(--theme-text)] md:text-5xl xl:text-6xl">
+                      <EditablePageValue fieldKey="title" initialValue={content.title} />
+                    </h2>
+                  </PageEditorBuiltInBlock>
+                );
+              })}
             </div>
-          )}
+
+            <PageContentItems slotKey="header_end" />
+
+            {items.length === 0 ? (
+              <div className="page-freeform-region shop-empty-freeform">
+                <PageEditorBuiltInBlock pageKey="shop" regionKey="empty" blockKey="emptyState" label="Empty State">
+                  <p className="max-w-2xl text-base leading-8 text-[color:var(--theme-text-muted)]">
+                    <EditablePageValue fieldKey="emptyState" initialValue={content.emptyState} />
+                  </p>
+                </PageEditorBuiltInBlock>
+              </div>
+            ) : (
+              <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
+                {items.map((item) => (
+                  <Link key={item.id} href={`/shop/${item.id}`} className="group block text-center">
+                    <article>
+                      <div className="relative overflow-hidden rounded-[1.6rem] border border-[color:var(--theme-border)] bg-[color:var(--theme-surface-soft)] p-3 shadow-[0_20px_60px_color-mix(in_srgb,var(--theme-shadow)_18%,transparent)] transition-transform duration-200 group-hover:-translate-y-1">
+                        <div className="absolute left-6 top-6 z-10 rounded-full border border-[color:var(--theme-border)] bg-[color:var(--theme-surface-strong-soft)] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-[color:var(--theme-text)] shadow-[0_4px_12px_color-mix(in_srgb,var(--theme-shadow)_12%,transparent)]">
+                          {getBadgeText(item)}
+                        </div>
+                        <div className="overflow-hidden rounded-[1.25rem] bg-[color:var(--theme-surface-strong-soft)]">
+                          <ShopCardImage
+                            src={item.imageUrl}
+                            alt={item.title}
+                            className="h-[26rem] w-full object-cover transition-transform duration-500 group-hover:scale-[1.02] md:h-[32rem] xl:h-[34rem]"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="px-3 pb-2 pt-5">
+                        <h3 className="text-2xl font-semibold tracking-[-0.04em] text-[color:var(--theme-text)] underline decoration-[color:var(--theme-accent)] underline-offset-[0.16em]">
+                          {item.title}
+                        </h3>
+                        <p className="mt-2 text-xl font-semibold text-[color:var(--theme-accent)]">
+                          {formatPrice(item.costPence)}
+                        </p>
+                      </div>
+                    </article>
+                  </Link>
+                ))}
+              </div>
+            )}
+
+            <PageContentItems slotKey="grid_end" />
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {canManagePages ? <PageEditLink href="/admin/pages/shop" /> : null}
+    </PageEditorProvider>
   );
 }
+

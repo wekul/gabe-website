@@ -8,6 +8,7 @@ export const ALL_PERMISSIONS = [
   "view_image_views",
   "view_error_logs",
   "manage_theme",
+  "manage_pages",
   "manage_users",
   "manage_roles",
   "manage_notifications",
@@ -17,3 +18,5 @@ export const ALL_PERMISSIONS = [
 
 export type Permission = (typeof ALL_PERMISSIONS)[number];
 export type UserRole = string;
+
+

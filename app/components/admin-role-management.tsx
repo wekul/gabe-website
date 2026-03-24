@@ -22,6 +22,7 @@ const permissionLabels: Record<Permission, string> = {
   view_image_views: "View image tracking logs",
   view_error_logs: "View application error logs",
   manage_theme: "Manage website theme",
+  manage_pages: "Edit live page content",
   manage_users: "Manage users",
   manage_roles: "Manage roles and permissions",
   manage_notifications: "Manage notification schedule",
@@ -449,6 +450,8 @@ export default function AdminRoleManagement({
     </section>
   );
 }
+
+
 
 
 

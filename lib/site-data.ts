@@ -278,6 +278,9 @@ function normalizeSiteTheme(
     backgroundStyle?: string | null;
     gradientDirection?: number | null;
     gradientIntensity?: number | null;
+    pageEditorBetaEnabled?: boolean | null;
+    announcementEnabled?: boolean | null;
+    announcementText?: string | null;
   },
   existing: SiteThemeValues = DEFAULT_SITE_THEME,
 ): SiteThemeValues {
@@ -310,6 +313,9 @@ function normalizeSiteTheme(
     ),
     text: normalizeHexColor(input.text ?? existing.text, existing.text),
     mutedText: normalizeHexColor(input.mutedText ?? existing.mutedText, existing.mutedText),
+    pageEditorBetaEnabled: Boolean(input.pageEditorBetaEnabled ?? existing.pageEditorBetaEnabled),
+    announcementEnabled: Boolean(input.announcementEnabled ?? existing.announcementEnabled),
+    announcementText: (input.announcementText ?? existing.announcementText).trim(),
   };
 }
 
@@ -600,6 +606,9 @@ function mapSiteTheme(theme: {
   surfaceStrong: string;
   text: string;
   mutedText: string;
+  pageEditorBetaEnabled: boolean;
+  announcementEnabled: boolean;
+  announcementText: string;
 }): SiteThemeRecord {
   return normalizeSiteTheme({
     backgroundStyle: theme.backgroundStyle ?? DEFAULT_SITE_THEME.backgroundStyle,
@@ -612,6 +621,9 @@ function mapSiteTheme(theme: {
     surfaceStrong: theme.surfaceStrong,
     text: theme.text,
     mutedText: theme.mutedText,
+    pageEditorBetaEnabled: theme.pageEditorBetaEnabled,
+    announcementEnabled: theme.announcementEnabled,
+    announcementText: theme.announcementText,
   });
 }
 
@@ -635,6 +647,11 @@ export async function getCurrentUserRoleContext(userId: string) {
   return getUserRoleContext(userId);
 }
 
+export async function isPageEditorBetaEnabled() {
+  const theme = await getSiteTheme();
+  return theme.pageEditorBetaEnabled;
+}
+
 export async function getSiteTheme() {
   await ensureDatabase();
 
@@ -646,7 +663,12 @@ export async function getSiteTheme() {
     return DEFAULT_SITE_THEME;
   }
 
-  return mapSiteTheme(theme);
+  return mapSiteTheme({
+    ...theme,
+    pageEditorBetaEnabled: Boolean((theme as { pageEditorBetaEnabled?: boolean | null }).pageEditorBetaEnabled),
+    announcementEnabled: Boolean((theme as { announcementEnabled?: boolean | null }).announcementEnabled),
+    announcementText: (theme as { announcementText?: string | null }).announcementText ?? "",
+  });
 }
 
 export async function updateSiteTheme(input: Partial<SiteThemeValues>) {
@@ -664,7 +686,12 @@ export async function updateSiteTheme(input: Partial<SiteThemeValues>) {
     },
   });
 
-  return mapSiteTheme(savedTheme);
+  return mapSiteTheme({
+    ...savedTheme,
+    pageEditorBetaEnabled: Boolean((savedTheme as { pageEditorBetaEnabled?: boolean | null }).pageEditorBetaEnabled),
+    announcementEnabled: Boolean((savedTheme as { announcementEnabled?: boolean | null }).announcementEnabled),
+    announcementText: (savedTheme as { announcementText?: string | null }).announcementText ?? "",
+  });
 }
 
 export async function getEnabledImageSpotlightIds() {
