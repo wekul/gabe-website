@@ -54,7 +54,13 @@ export default async function RootLayout({
             <AnnouncementBanner text={siteTheme.announcementText} />
           ) : null}
           <header className="site-header">
-            <h1 className="site-title">Matthaus Addy</h1>
+            <div className="site-title-mark" aria-label="Matthaus Addy">
+              <img
+                src="https://img.matthausaddy.com/raw/J5HtMg.webp"
+                alt="Matthaus Addy"
+                className="site-title-image"
+              />
+            </div>
             <MobileNav />
           </header>
           <main>{children}</main>

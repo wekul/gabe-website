@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 86" role="img" aria-labelledby="title">
+  <title>Matthaus Addy</title>
+  <defs>
+    <clipPath id="mark-clip">
+      <rect x="0" y="0" width="360" height="86" rx="0" ry="0" />
+    </clipPath>
+  </defs>
+  <g clip-path="url(#mark-clip)">
+    <image
+      href="https://img.matthausaddy.com/raw/J5HtMg.webp"
+      x="0"
+      y="-6"
+      width="360"
+      height="126"
+      preserveAspectRatio="none"
+    />
+  </g>
+</svg>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import EditablePageValue from "@/app/components/editable-page-value";
+import HomeGallery from "@/app/components/home-gallery";
 import PageContentItems from "@/app/components/page-content-items";
 import PageEditLink from "@/app/components/page-edit-link";
 import PageEditorBuiltInBlock from "@/app/components/page-editor-built-in-block";
@@ -13,6 +14,7 @@ import {
 } from "@/lib/page-content";
 
 export const dynamic = "force-dynamic";
+
 
 export default async function Home() {
   const [content, layout, items, canManagePages] = await Promise.all([
@@ -55,6 +57,10 @@ export default async function Home() {
                     <Link href="/shop" className="public-link"><EditablePageValue fieldKey="primaryLinkLabel" initialValue={content.primaryLinkLabel} /></Link>
                     <Link href="/contact" className="public-link secondary"><EditablePageValue fieldKey="secondaryLinkLabel" initialValue={content.secondaryLinkLabel} /></Link>
                   </div>
+                  <a href="#portfolio" className="home-portfolio-link pt-70">
+                    <span>Portfolio</span>
+                    <span className="home-portfolio-arrow" aria-hidden="true">↓</span>
+                  </a>
                 </PageEditorBuiltInBlock>
               );
             })}
@@ -63,7 +69,8 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="public-shell">
+      <section id="portfolio" className="public-shell home-gallery-shell">
+        <HomeGallery />
         <PageContentItems slotKey="page_end" />
       </section>
 
